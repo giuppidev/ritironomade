@@ -1,0 +1,130 @@
+---
+import { Calendar, MapPin, Users } from "@lucide/astro";
+import { scheduleData } from "../data/aosta";
+---
+
+<section class="py-20 px-4 bg-white" id="aosta">
+  <div class="py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+      <h1 class="text-5xl font-light text-stone-800 text-center mb-16">
+        Edizione giugno 2025
+      </h1>
+      <p
+        class="text-lg text-stone-700 font-normal text-center mb-16 border rounded-lg md:rounded-full p-2"
+      >
+        <span class="font-semibold">Prenotazioni terminate</span>, se vuoi
+        rimanere aggiornato sulle prossime edizioni <a
+          href="https://www.giuppi.dev/#community"
+          target="_blank"
+          class="underline">entra nella community</a
+        >
+      </p>
+
+      {/* Event Details Rows */}
+      <div class="space-y-8 mb-16">
+        {/* When Row */}
+        <div class="flex items-top gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <Calendar class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Quando</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              dal 19 al 22 Giugno 2025
+            </p>
+            <p class="text-stone-500">
+              4 giorni di unconference, lavoro e natura
+            </p>
+          </div>
+        </div>
+
+        {/* Where Row */}
+        <div class="flex items-top gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <MapPin class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Dove</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              <a
+                href="https://www.google.com/maps/place/Case+vacanza+Vieilles+maisons+d'Introd/@45.692663,7.1825525,15z/data=!4m8!3m7!1s0x0:0xac8d4f3bf892a698!5m2!4m1!1i2!8m2!3d45.692663!4d7.1825525"
+                class="underline"
+                target="_blank">Introd</a
+              >, Valle d'Aosta
+            </p>
+
+            <div class="text-stone-500 space-y-2 mt-4">
+              <p>Info utili:</p>
+              <p>
+                🏡 <b>Alloggi:</b>
+                <a
+                  href="https://appartamenti-valledaosta.it/"
+                  target="_blank"
+                  class="underline">Vieillese Maison</a
+                >
+              </p>
+              <p>🚗 <b>Auto:</b> Autostrada uscita Aosta</p>
+              <p>
+                🚌 <b>Pullman:</b> Flixbus fino ad Aosta (da Torino e Milano per
+                es.) / <a
+                  href="https://www.mycicero.it/arriva-bg/TPWebPortal/it"
+                  target="_blank"
+                  class="text-blue-600 hover:text-blue-800 underline">Arriva</a
+                > per Introd
+              </p>
+              <p>
+                🚆 <b>Treno:</b> Cambio ad Ivrea su bus sostitutivo, gestito da Trenitalia
+              </p>
+              <p>
+                Per organizzare passaggi, <a
+                  href="https://docs.google.com/spreadsheets/d/1O2qVP1o3Tgvvjr-aJrmBegb_CZttu-ji7Sp0k_Ec13U/edit?usp=sharing"
+                  target="_blank"
+                  class="text-blue-600 hover:text-blue-800 underline">qui</a
+                > puoi offrire o cercare un passaggio.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* What Row */}
+        <div class="flex items-top gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <Users class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Cosa</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              Lavoro da remoto, workshop, chiacchiere, esperienze di montagna
+            </p>
+            <p class="text-stone-500">Unconference, convivialità, natura</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-8 mx-auto">
+    <h2 class="text-4xl font-light text-stone-800 text-center mb-16">
+      Programma Giornaliero
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        scheduleData.map((schedule) => (
+          <div class=" rounded-lg p-1 ">
+            <h3 class="text-3xl font-semibold mb-4">{schedule.date}</h3>
+            <ul class="space-y-4 text-lg ">
+              {schedule.activities.map((activity) => (
+                <li>
+                  <p class="font-light text-xs text-stone-500">
+                    {activity.time}
+                  </p>
+                  <p class="font-medium">{activity.title}</p>
+                  <p class="text-stone-500 text-sm">{activity.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

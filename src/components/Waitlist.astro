@@ -1,0 +1,32 @@
+---
+// Waitlist section for digital nomad retreat landing page
+import Button from "./ui/Button.astro";
+import { ExternalLink } from "@lucide/astro";
+---
+
+<section class="py-20 px-4 bg-primary">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl font-light text-white mb-6">
+      Vuoi rimanere aggiornato sulle prossime edizioni?
+    </h2>
+    <p class="text-xl text-emerald-100 mb-8 leading-relaxed">
+      I posti sono limitati per garantire un'esperienza intima e di alta
+      qualità. Entra nella community per essere il primo a sapere quando si
+      apriranno le registrazioni e assicurati un posto in questo ritiro
+      trasformativo.
+    </p>
+    <Button
+      size="lg"
+      class="bg-white text-primary hover:bg-stone-50 px-8 py-4 text-lg rounded-full shadow-lg"
+    >
+      <a
+        href="https://www.giuppi.dev/#community"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center justify-center"
+      >
+        Entra nella community <ExternalLink class="ml-2 w-5 h-5" />
+      </a>
+    </Button>
+  </div>
+</section>

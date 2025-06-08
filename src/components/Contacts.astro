@@ -1,0 +1,42 @@
+---
+// Contacts section for digital nomad retreat landing page
+import { Card, CardContent } from "./ui/Card";
+import { Mail, MessageCircle } from "@lucide/astro";
+---
+
+<section class="py-20 px-4 bg-white">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl font-light text-stone-800 mb-12">Contattaci</h2>
+    <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+      <Card class="border-0 shadow-lg bg-stone-50">
+        <CardContent class="pt-8 text-center">
+          <Mail class="w-8 h-8 text-primary mx-auto mb-4" />
+          <h3 class="text-lg font-light text-stone-800 mb-2">Scrivici</h3>
+          <a
+            href="mailto:info@giuppi.dev"
+            class="text-primary hover:text-emerald-700 transition-colors"
+          >
+            info@giuppi.dev
+          </a>
+        </CardContent>
+      </Card>
+
+      <Card class="border-0 shadow-lg bg-stone-50">
+        <CardContent class="pt-8 text-center">
+          <MessageCircle class="w-8 h-8 text-primary mx-auto mb-4" />
+          <h3 class="text-lg font-light text-stone-800 mb-2">
+            Unisciti al Nostro Discord
+          </h3>
+          <a
+            href="https://www.giuppi.dev/discord"
+            class="text-primary hover:text-emerald-700 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            discord.gg/giuppidev
+          </a>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</section>

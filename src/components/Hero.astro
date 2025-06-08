@@ -1,0 +1,56 @@
+---
+// Hero section for digital nomad retreat landing page
+import logo from "../assets/logo.png";
+import background from "../assets/background3.png";
+import background2 from "../assets/background2.png";
+---
+
+<section
+  class="relative min-h-screen flex flex-col items-center justify-center bg-accent"
+>
+  <div
+    class="hidden md:block absolute inset-0 bg-cover bg-center"
+    style={`background-image: url(${background.src});`}
+  >
+  </div>
+  <div
+    class="block md:hidden absolute inset-0 bg-cover bg-center"
+    style={`background-image: url(${background2.src});`}
+  >
+  </div>
+  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
+    <h1 class="text-5xl md:text-9xl font-extrabold text-stone-50 mb-4">
+      Ritiro Nomade
+    </h1>
+  </div>
+  <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+    <p
+      class="text-xl md:text-2xl text-stone-50 mb-12 font-normal leading-relaxed"
+    >
+      Una comunità itinerante tra lavoro e libertà
+    </p>
+    <div class="flex justify-center">
+      <button
+        class="w-16 h-16 cursor-pointer rounded-full border-2 border-white/80 text-white/80 hover:border-white/100 hover:text-white/100 transition-all duration-300 flex items-center justify-center"
+        aria-label="Scroll down"
+        onclick="window.location.href='#info'"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="animate-bounce"
+        >
+          <path d="M12 5v14M5 12l7 7 7-7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>

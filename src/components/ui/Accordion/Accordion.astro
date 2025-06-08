@@ -1,0 +1,26 @@
+---
+interface Props {
+  type?: "single" | "multiple";
+  collapsible?: boolean;
+  class?: string;
+}
+
+const {
+  type = "single",
+  collapsible = false,
+  class: className = "",
+} = Astro.props;
+---
+
+<div
+  class:list={["w-full", className]}
+  data-accordion-type={type}
+  data-collapsible={collapsible}
+>
+  <slot />
+</div>
+
+<script>
+  import { initAccordion } from "./Accordion";
+  initAccordion();
+</script>
