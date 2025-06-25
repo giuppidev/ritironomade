@@ -126,6 +126,12 @@ export const scheduleData = [
     headerColor: "bg-purple-100",
     activities: [
       {
+        time: "7:00 – 8:00",
+        title: "Risveglio nel verde",
+        description: "Meditazione + Journaling (facoltativo)",
+        type: "wellness",
+      },
+      {
         time: "09:00 – 14:00",
         title: "Attività libere",
         description: "(arrampicata, camminata)",
