@@ -1,6 +1,6 @@
 export const scheduleData = [
   {
-    date: "Giovedì 19",
+    date: "Giovedì 22",
     title: "Arrivi e Connessioni",
     color: "bg-blue-50 border-blue-200",
     headerColor: "bg-blue-100",
@@ -26,7 +26,7 @@ export const scheduleData = [
     ],
   },
   {
-    date: "Venerdì 20",
+    date: "Venerdì 23",
     title: "Ritmo Misto: Lavoro + Preparazione",
     color: "bg-green-50 border-green-200",
     headerColor: "bg-green-100",
@@ -70,7 +70,7 @@ export const scheduleData = [
     ],
   },
   {
-    date: "Sabato 21",
+    date: "Sabato 24",
     title: "Giornata Unconference + Grigliata",
     color: "bg-orange-50 border-orange-200",
     headerColor: "bg-orange-100",
@@ -120,7 +120,7 @@ export const scheduleData = [
     ],
   },
   {
-    date: "Domenica 22",
+    date: "Domenica 25",
     title: "Outdoor e Saluti",
     color: "bg-purple-50 border-purple-200",
     headerColor: "bg-purple-100",

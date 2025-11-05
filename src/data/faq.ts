@@ -18,7 +18,7 @@ export const faqItems: FAQItem[] = [
   {
     question: "Posso portare altre persone?",
     answer:
-      "Puoi portare chi vuoi nei limiti dello spirito dell'evento, soprattutto se pensate di alloggiare in struttura.",
+      "Puoi portare chi vuoi nei limiti dello spirito dell'evento, soprattutto se pensate di alloggiare in struttura (posti limitati).",
   },
   {
     question: "Non so ancora se riesco a venire, posso unirmi dopo?",

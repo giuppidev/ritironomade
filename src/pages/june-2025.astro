@@ -6,10 +6,8 @@ import Hero from "../components/Hero.astro";
 import RetreatInfo from "../components/RetreatInfo.astro";
 import Aosta from "../components/Aosta.astro";
 import Waitlist from "../components/Waitlist.astro";
-import PastEdition from "../components/PastEdition.astro";
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import Bergamo from "../components/Bergamo.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -17,13 +15,8 @@ import Bergamo from "../components/Bergamo.astro";
 
 <Layout title="Ritiro nomade">
   <div class="min-h-screen bg-stone-50">
-    <Hero   videoId="Zfhv0X1VstY"
-  videoThumbnail="https://i.ytimg.com/vi/Zfhv0X1VstY/maxresdefault.jpg" />
-    <Waitlist />
-    <RetreatInfo />
-    <Bergamo />
-    <FAQ />
-    <PastEdition />
+    <Hero title="Estate 25"  subtitle="Introd, Aosta" style="!min-h-[400px]" showHomeButton={true} />
+    <Aosta />
     <Waitlist />
     <Footer />
   </div>

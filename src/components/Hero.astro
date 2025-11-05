@@ -3,11 +3,49 @@
 import logo from "../assets/logo.png";
 import background from "../assets/background3.png";
 import background2 from "../assets/background2.png";
+interface Props {
+  title?: string;
+  subtitle?: string;
+  style?: string;
+  showHomeButton?: boolean;
+  videoId?: string;
+  videoThumbnail?: string;
+}
+const props = Astro.props as Props;
+
+const title = props.title || "Ritiro Nomade";
+const subtitle = props.subtitle || "Lavorare e vivere in totale libertà.";
+const style = props.style || "";
+const showHomeButton = props.showHomeButton || false;
+const videoId = props.videoId;
+const videoThumbnail = props.videoThumbnail;
 ---
 
 <section
-  class="relative min-h-screen flex flex-col items-center justify-center bg-accent"
+  class={`relative min-h-screen flex flex-col items-center justify-center bg-accent ${style}`}
 >
+  {showHomeButton && (
+    <a
+      href="/"
+      class="absolute top-6 left-6 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/80 text-white/80 hover:bg-white/20 hover:border-white/100 hover:text-white/100 transition-all duration-300 flex items-center justify-center"
+      aria-label="Home"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+  )}
   <div
     class="hidden md:block absolute inset-0 bg-cover bg-center"
     style={`background-image: url(${background.src});`}
@@ -21,20 +59,60 @@ import background2 from "../assets/background2.png";
   <div class="absolute inset-0 bg-black/40"></div>
   <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
     <h1 class="text-5xl md:text-9xl font-extrabold text-stone-50 mb-4">
-      Ritiro Nomade
+      {title}
     </h1>
   </div>
   <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
-    <p
+  
+    {videoId && (
+      <div class="mb-12 max-w-4xl w-full px-4">
+        <div class="relative group cursor-pointer" id="video-container">
+          <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-black/20 backdrop-blur-sm border-2 border-white/20 hover:border-white/40 transition-all duration-300">
+            {videoThumbnail ? (
+              <img
+                src={videoThumbnail}
+                alt="Video thumbnail"
+                class="w-full h-full object-cover"
+              />
+            ) : (
+              <div class="w-full h-full flex items-center justify-center">
+                <div class="text-white/50 text-lg">Video Preview</div>
+              </div>
+            )}
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+              <div class="w-20 h-20 rounded-full bg-white/90 group-hover:bg-white group-hover:scale-110 transition-all duration-300 flex items-center justify-center shadow-xl">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="text-red-600 ml-1"
+                >
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  <p
       class="text-xl md:text-2xl text-stone-50 mb-12 font-normal leading-relaxed"
     >
-      Una comunità itinerante tra lavoro e libertà
+      {subtitle}
     </p>
-    <div class="flex justify-center">
+  </div>
+</section>
+
+<!-- Video Dialog Modal -->
+{videoId && (
+  <div id="video-dialog" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm" style="display: none;">
+    <div class="relative w-full max-w-6xl mx-4 aspect-video animate-scale-in">
       <button
-        class="w-16 h-16 cursor-pointer rounded-full border-2 border-white/80 text-white/80 hover:border-white/100 hover:text-white/100 transition-all duration-300 flex items-center justify-center"
-        aria-label="Scroll down"
-        onclick="window.location.href='#info'"
+        id="close-video"
+        class="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors duration-200"
+        aria-label="Close video"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -46,11 +124,73 @@ import background2 from "../assets/background2.png";
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="animate-bounce"
         >
-          <path d="M12 5v14M5 12l7 7 7-7"></path>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
+      <div class="rounded-2xl overflow-hidden shadow-2xl w-full h-full">
+        <iframe
+          id="youtube-iframe"
+          width="100%"
+          height="100%"
+          src=""
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
   </div>
-</section>
+)}
+
+<script is:inline define:vars={{ videoId }}>
+  if (videoId) {
+    const videoContainer = document.getElementById('video-container');
+    const videoDialog = document.getElementById('video-dialog');
+    const closeButton = document.getElementById('close-video');
+    const youtubeIframe = document.getElementById('youtube-iframe');
+
+    videoContainer?.addEventListener('click', () => {
+      if (videoDialog && youtubeIframe) {
+        youtubeIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        videoDialog.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    closeButton?.addEventListener('click', () => {
+      if (videoDialog && youtubeIframe) {
+        videoDialog.style.display = 'none';
+        youtubeIframe.src = '';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    videoDialog?.addEventListener('click', (e) => {
+      if (e.target === videoDialog && youtubeIframe) {
+        videoDialog.style.display = 'none';
+        youtubeIframe.src = '';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  }
+</script>
+
+<style>
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+</style>
