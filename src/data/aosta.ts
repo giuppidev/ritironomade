@@ -129,7 +129,7 @@ export const scheduleData: DaySchedule[] = [
         endHour: 19.5,
         title: "Attività libere",
         description:
-          "trekking, hot seat, nomad talks, wannabe solopreneur, vibe living, masterclass cucina",
+          "trekking, hot seat, nomad talks, wannabe solopreneur, pimp my van, vibe living, masterclass cucina",
         type: "social",
         parallel: "right",
       },
