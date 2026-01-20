@@ -1,6 +1,7 @@
 ---
 import { Calendar, MapPin, Users } from "@lucide/astro";
 import { scheduleData } from "../data/aosta";
+import WeekSchedule from "./WeekSchedule.astro";
 ---
 
 <section class="py-20 px-4 bg-white" id="aosta">
@@ -102,29 +103,10 @@ import { scheduleData } from "../data/aosta";
       </div>
     </div>
   </div>
-  <div class="px-8 mx-auto">
-    <h2 class="text-4xl font-light text-stone-800 text-center mb-16">
+  <div class="px-4 md:px-8 mx-auto max-w-7xl">
+    <h2 class="text-4xl font-light text-stone-800 text-center mb-8">
       Programma Giornaliero
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {
-        scheduleData.map((schedule) => (
-          <div class=" rounded-lg p-1 ">
-            <h3 class="text-3xl font-semibold mb-4">{schedule.date}</h3>
-            <ul class="space-y-4 text-lg ">
-              {schedule.activities.map((activity) => (
-                <li>
-                  <p class="font-light text-xs text-stone-500">
-                    {activity.time}
-                  </p>
-                  <p class="font-medium">{activity.title}</p>
-                  <p class="text-stone-500 text-sm">{activity.description}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
+    <WeekSchedule data={scheduleData} />
   </div>
 </section>

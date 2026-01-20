@@ -1,0 +1,280 @@
+---
+import type { DaySchedule, ActivityType } from "../data/aosta";
+
+interface Props {
+  data: DaySchedule[];
+}
+
+const { data } = Astro.props;
+
+// Time range configuration
+const START_HOUR = 7;
+const END_HOUR = 23;
+const HOUR_HEIGHT = 60; // pixels per hour
+
+// Color mapping for activity types
+const typeColors: Record<ActivityType, string> = {
+  work: "bg-blue-100",       // Work - blu
+  meal: "bg-red-100",        // Eat - rosso
+  session: "bg-orange-200",  // Unconference - arancione
+  wellness: "bg-teal-100", // Wellness - viola
+  social: "bg-green-200",    // Social - verde
+};
+
+// Legend categories
+const legendItems = [
+  { label: "Work", color: "bg-blue-100" },
+  { label: "Eat", color: "bg-red-100" },
+  { label: "Unconference", color: "bg-orange-200" },
+  { label: "Mindfulness", color: "bg-teal-100" },
+  { label: "Connect", color: "bg-green-200" },
+];
+
+// Generate hours array
+const hours = Array.from({ length: END_HOUR - START_HOUR }, (_, i) => START_HOUR + i);
+
+// Calculate top position and height for an activity
+function getActivityStyle(startHour: number, endHour: number) {
+  const top = (startHour - START_HOUR) * HOUR_HEIGHT;
+  const height = (endHour - startHour) * HOUR_HEIGHT;
+  return { top, height };
+}
+---
+
+<div class="w-full">
+  <!-- Legend -->
+  <div class="flex flex-wrap gap-4 justify-center mb-8">
+    {legendItems.map((item) => (
+      <div class="flex items-center gap-2">
+        <span class={`w-4 h-4 rounded-full ${item.color}`}></span>
+        <span class="text-sm text-stone-600">{item.label}</span>
+      </div>
+    ))}
+  </div>
+
+  <!-- Mobile View: Swipeable single day -->
+  <div class="mobile-schedule md:hidden">
+    <!-- Swipe hint -->
+    <p class="text-center text-sm text-stone-400 mb-2">← scorri per cambiare giorno →</p>
+
+    <!-- Dots indicator -->
+    <div class="flex justify-center gap-2 mb-4" id="mobile-dots">
+      {data.map((_, i) => (
+        <button
+          class={`w-2.5 h-2.5 rounded-full transition-colors ${i === 0 ? 'bg-stone-600' : 'bg-stone-300'}`}
+          data-index={i}
+        ></button>
+      ))}
+    </div>
+
+    <!-- Swipeable container -->
+    <div class="mobile-scroll-container overflow-x-auto snap-x snap-mandatory" id="mobile-scroll">
+      <div class="flex" style={`width: ${data.length * 100}%;`}>
+        {data.map((day, dayIndex) => (
+          <div class="w-full flex-shrink-0 snap-center px-2" style="width: calc(100% / 4);">
+            <!-- Day header -->
+            <div class="text-center font-semibold p-3 border-b border-stone-200 text-stone-700 mb-2">
+              {day.date}
+            </div>
+
+            <!-- Day schedule with time labels -->
+            <div class="flex">
+              <!-- Time labels -->
+              <div class="relative w-12 flex-shrink-0" style={`height: ${(END_HOUR - START_HOUR) * HOUR_HEIGHT}px;`}>
+                {hours.map((hour) => (
+                  <div
+                    class="absolute right-2 text-xs text-stone-400 -translate-y-2"
+                    style={`top: ${(hour - START_HOUR) * HOUR_HEIGHT}px;`}
+                  >
+                    {hour.toString().padStart(2, "0")}:00
+                  </div>
+                ))}
+              </div>
+
+              <!-- Activities column -->
+              <div
+                class="relative flex-1 border-l border-stone-200"
+                style={`height: ${(END_HOUR - START_HOUR) * HOUR_HEIGHT}px;`}
+              >
+                <!-- Hour grid lines -->
+                {hours.map((hour) => (
+                  <div
+                    class="absolute w-full border-b border-stone-100"
+                    style={`top: ${(hour - START_HOUR) * HOUR_HEIGHT}px;`}
+                  />
+                ))}
+
+                <!-- Activities -->
+                {day.activities.map((activity) => {
+                  const style = getActivityStyle(activity.startHour, activity.endHour);
+                  const colorClass = typeColors[activity.type];
+                  const positionClass = activity.parallel === "left"
+                    ? "left-1 right-[50%] mr-0.5"
+                    : activity.parallel === "right"
+                      ? "left-[50%] right-1 ml-0.5"
+                      : "left-1 right-1";
+                  const descItems = activity.description ? activity.description.split(", ") : [];
+                  const showAsList = descItems.length > 1;
+                  return (
+                    <div
+                      class={`absolute rounded-lg p-2 overflow-hidden ${colorClass} ${positionClass}`}
+                      style={`top: ${style.top}px; height: ${style.height}px;`}
+                    >
+                      <p class="font-medium text-sm text-stone-800 leading-tight">{activity.title}</p>
+                      {activity.description && style.height >= 50 && (
+                        showAsList ? (
+                          <ul class="text-xs text-stone-600 mt-1 leading-tight list-disc list-inside">
+                            {descItems.map((item) => <li>{item}</li>)}
+                          </ul>
+                        ) : (
+                          <p class="text-xs text-stone-600 mt-1 leading-tight">{activity.description}</p>
+                        )
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop View: Full grid -->
+  <div class="desktop-schedule hidden md:block overflow-x-auto pb-4">
+    <div class="min-w-[700px]">
+      <!-- Grid Container -->
+      <div class="grid" style={`grid-template-columns: 50px repeat(${data.length}, minmax(140px, 1fr));`}>
+        <!-- Header Row -->
+        <div class="sticky left-0 bg-white z-10 border-b border-stone-200"></div>
+        {data.map((day) => (
+          <div class="text-center font-semibold p-3 border-b border-stone-200 text-stone-700">
+            {day.shortDate}
+          </div>
+        ))}
+
+        <!-- Time Grid Body -->
+        <div class="sticky left-0 bg-white z-10" style={`height: ${(END_HOUR - START_HOUR) * HOUR_HEIGHT}px;`}>
+          <!-- Time labels -->
+          {hours.map((hour) => (
+            <div
+              class="absolute right-2 text-xs text-stone-400 -translate-y-2"
+              style={`top: ${(hour - START_HOUR) * HOUR_HEIGHT}px;`}
+            >
+              {hour.toString().padStart(2, "0")}:00
+            </div>
+          ))}
+        </div>
+
+        <!-- Day Columns -->
+        {data.map((day, dayIndex) => (
+          <div
+            class="relative border-l border-stone-200"
+            style={`height: ${(END_HOUR - START_HOUR) * HOUR_HEIGHT}px;`}
+          >
+            <!-- Hour grid lines -->
+            {hours.map((hour) => (
+              <div
+                class="absolute w-full border-b border-stone-100"
+                style={`top: ${(hour - START_HOUR) * HOUR_HEIGHT}px;`}
+              />
+            ))}
+
+            <!-- Activities -->
+            {day.activities.map((activity) => {
+              const style = getActivityStyle(activity.startHour, activity.endHour);
+              const colorClass = typeColors[activity.type];
+              // Handle parallel activities
+              const positionClass = activity.parallel === "left"
+                ? "left-1 right-[50%] mr-0.5"
+                : activity.parallel === "right"
+                  ? "left-[50%] right-1 ml-0.5"
+                  : "left-1 right-1";
+              const descItems = activity.description ? activity.description.split(", ") : [];
+              const showAsList = descItems.length > 1;
+              return (
+                <div
+                  class={`absolute rounded-lg p-2 overflow-hidden ${colorClass} ${positionClass}`}
+                  style={`top: ${style.top}px; height: ${style.height}px;`}
+                >
+                  <p class="font-medium text-sm text-stone-800 leading-tight">{activity.title}</p>
+                  {activity.description && style.height >= 50 && (
+                    showAsList ? (
+                      <ul class="text-xs text-stone-600 mt-1 leading-tight list-disc list-inside">
+                        {descItems.map((item) => <li>{item}</li>)}
+                      </ul>
+                    ) : (
+                      <p class="text-xs text-stone-600 mt-1 leading-tight">{activity.description}</p>
+                    )
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mobile-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .mobile-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .desktop-schedule {
+    scrollbar-width: thin;
+  }
+
+  .desktop-schedule::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .desktop-schedule::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .desktop-schedule::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
+    border-radius: 4px;
+  }
+
+  .desktop-schedule::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+</style>
+
+<script>
+  const scrollContainer = document.getElementById('mobile-scroll');
+  const dots = document.querySelectorAll('#mobile-dots button');
+
+  if (scrollContainer && dots.length > 0) {
+    const updateDots = () => {
+      const scrollLeft = scrollContainer.scrollLeft;
+      const itemWidth = scrollContainer.scrollWidth / dots.length;
+      const activeIndex = Math.round(scrollLeft / itemWidth);
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-stone-600', i === activeIndex);
+        dot.classList.toggle('bg-stone-300', i !== activeIndex);
+      });
+    };
+
+    scrollContainer.addEventListener('scroll', updateDots);
+
+    // Click on dots to navigate
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        const itemWidth = scrollContainer.scrollWidth / dots.length;
+        scrollContainer.scrollTo({ left: itemWidth * i, behavior: 'smooth' });
+      });
+    });
+  }
+</script>
