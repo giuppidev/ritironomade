@@ -8,10 +8,10 @@ import { getEdition } from "../data/editions";
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 
-const edition = getEdition("june-2025");
+const edition = getEdition("may-2026");
 
 if (!edition) {
-  throw new Error("Edition june-2025 not found");
+  throw new Error("Edition may-2026 not found");
 }
 ---
 

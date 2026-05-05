@@ -1,13 +1,9 @@
 ---
-import { Calendar, MapPin, Users } from "@lucide/astro";
-import value1 from "../assets/value1.png";
-import value2 from "../assets/value2.png";
-import value3 from "../assets/value3.png";
 ---
 
 <section id="info" class="py-20 px-4 bg-muted">
-  <div class="mb-20">
-    <div class="text-center mb-12">
+  <div>
+    <div class="text-center">
       <h1 class="text-5xl font-light text-stone-800 text-center mb-16">
         Che cosa è un ritiro nomade?
       </h1>
@@ -26,71 +22,11 @@ import value3 from "../assets/value3.png";
         </p>
       </div>
     </div>
-
-    {/* Values Row */}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-      {/* Value 1 */}
-      <div class="text-center">
-        <div class="w-64 h-64 mx-auto mb-4">
-          <img
-            src={value1.src}
-            alt="Remote worker in nature"
-            class="w-full h-full object-contain"
-          />
-        </div>
-        <h3 class="text-2xl font-medium text-stone-800 mb-3">
-          Connessioni autentiche
-        </h3>
-        <p class="text-stone-600 leading-relaxed text-sm">
-          Conosci persone come te, condividi esperienze, impara e insegna in un
-          contesto informale. Qui le relazioni nascono attorno a un fuoco, non
-          dentro una conference room.
-        </p>
-      </div>
-
-      {/* Value 2 */}
-      <div class="text-center">
-        <div class="w-64 h-64 mx-auto mb-4">
-          <img
-            src={value2.src}
-            alt="Remote worker in nature"
-            class="w-full h-full object-contain"
-          />
-        </div>
-        <h3 class="text-2xl font-medium text-stone-800 mb-3">
-          Focus e libertà
-        </h3>
-        <p class="text-stone-600 leading-relaxed text-sm">
-          Spazi e tempi pensati per lavorare con concentrazione, ma senza
-          rinunciare a momenti di respiro, scambio e scoperta. Qui il ritmo lo
-          scegli tu, in equilibrio tra produttività e libertà.
-        </p>
-      </div>
-
-      {/* Value 3 */}
-      <div class="text-center">
-        <div class="w-64 h-64 mx-auto mb-4">
-          <img
-            src={value3.src}
-            alt="Remote worker in nature"
-            class="w-full h-full object-contain"
-          />
-        </div>
-        <h3 class="text-2xl font-medium text-stone-800 mb-3">
-          Natura che rigenera
-        </h3>
-        <p class="text-stone-600 leading-relaxed text-sm">
-          Che sia mare, bosco o collina, la natura è il nostro sfondo. Uno
-          spazio vivo che stimola nuove idee, ritmi più umani e un senso di
-          libertà difficile da spiegare.
-        </p>
-      </div>
-    </div>
     <div class="flex justify-center mt-12">
       <button
         class="w-16 h-16 cursor-pointer rounded-full border-2 border-black/80 text-black/80 hover:border-black/100 hover:text-black/100 transition-all duration-300 flex items-center justify-center"
         aria-label="Scroll down"
-        onclick="window.location.href='#aosta'"
+        onclick="window.location.href='#editions'"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

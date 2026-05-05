@@ -1,0 +1,217 @@
+---
+import { Calendar, MapPin, Play, Users } from "@lucide/astro";
+import type { Edition } from "../data/editions";
+import WeekSchedule from "./WeekSchedule.astro";
+
+interface Props {
+  edition: Edition;
+}
+
+const { edition } = Astro.props;
+const video = edition.video;
+const videoButtonId = `vlog-card-${edition.slug}`;
+const videoDialogId = `vlog-dialog-${edition.slug}`;
+const videoCloseId = `vlog-close-${edition.slug}`;
+const videoIframeId = `vlog-iframe-${edition.slug}`;
+---
+
+<section class="py-20 px-4 bg-white" id={edition.slug}>
+  {
+    video && (
+      <div class="max-w-5xl mx-auto mb-16">
+        <button
+          id={videoButtonId}
+          class="group grid w-full overflow-hidden rounded-lg bg-stone-900 text-left shadow-lg md:grid-cols-[1.4fr_1fr] focus:outline-none focus:ring-4 focus:ring-primary/40"
+          type="button"
+        >
+          <div class="relative aspect-video overflow-hidden bg-stone-900">
+            <img
+              src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
+              alt=""
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+              <span class="flex h-16 w-16 items-center justify-center rounded-full bg-white text-red-600 shadow-xl transition-transform duration-300 group-hover:scale-110">
+                <Play class="ml-1 h-8 w-8 fill-current" />
+              </span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center p-6 text-white">
+            <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-white/60">
+              Video vlog
+            </p>
+            <h2 class="mb-3 text-3xl font-semibold leading-tight">
+              {video.title}
+            </h2>
+            <p class="text-base leading-relaxed text-white/75">
+              {video.description}
+            </p>
+          </div>
+        </button>
+      </div>
+    )
+  }
+
+  <div class="py-8 px-4">
+    <div class="max-w-5xl mx-auto">
+      <h1 class="text-5xl font-light text-stone-800 text-center mb-16">
+        {edition.title}
+      </h1>
+      <p class="text-lg text-stone-700 font-normal text-center mb-16 border rounded-lg md:rounded-full p-2">
+        <span class="font-semibold">{edition.status.label}</span>.{" "}
+        <span set:html={edition.status.html} />
+      </p>
+
+      <div class="space-y-8 mb-16">
+        <div class="flex items-start gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <Calendar class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Quando</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              {edition.when.title}
+            </p>
+            <p class="text-stone-500">{edition.when.description}</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <MapPin class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Dove</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              <a
+                href={edition.where.href}
+                class="underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {edition.where.name}
+              </a>{edition.where.suffix}
+            </p>
+
+            <div class="text-stone-500 space-y-2 mt-4">
+              <p>Info utili:</p>
+              {
+                edition.where.usefulInfo.map((item) => (
+                  <p>
+                    <b>{item.label}:</b>{" "}
+                    <span set:html={item.html} />
+                  </p>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <Users class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Cosa</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              {edition.what.title}
+            </p>
+            <p class="text-stone-500">{edition.what.description}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-4 md:px-8 mx-auto max-w-7xl">
+    <h2 class="text-4xl font-light text-stone-800 text-center mb-8">
+      Programma Giornaliero
+    </h2>
+    <WeekSchedule data={edition.schedule} />
+  </div>
+</section>
+
+{
+  video && (
+    <div
+      id={videoDialogId}
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 px-4 backdrop-blur-sm"
+      style="display: none;"
+    >
+      <div class="relative w-full max-w-6xl aspect-video">
+        <button
+          id={videoCloseId}
+          class="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors duration-200"
+          aria-label="Chiudi video"
+          type="button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <div class="rounded-lg overflow-hidden shadow-2xl w-full h-full">
+          <iframe
+            id={videoIframeId}
+            width="100%"
+            height="100%"
+            src=""
+            title={video.title}
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
+        </div>
+      </div>
+    </div>
+
+    <script
+      is:inline
+      define:vars={{
+        videoId: video.youtubeId,
+        videoButtonId,
+        videoDialogId,
+        videoCloseId,
+        videoIframeId,
+      }}
+    >
+      const videoButton = document.getElementById(videoButtonId);
+      const videoDialog = document.getElementById(videoDialogId);
+      const videoClose = document.getElementById(videoCloseId);
+      const videoIframe = document.getElementById(videoIframeId);
+
+      const closeVlog = () => {
+        if (videoDialog && videoIframe) {
+          videoDialog.style.display = "none";
+          videoIframe.src = "";
+          document.body.style.overflow = "auto";
+        }
+      };
+
+      videoButton?.addEventListener("click", () => {
+        if (videoDialog && videoIframe) {
+          videoIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          videoDialog.style.display = "flex";
+          document.body.style.overflow = "hidden";
+        }
+      });
+
+      videoClose?.addEventListener("click", closeVlog);
+      videoDialog?.addEventListener("click", (event) => {
+        if (event.target === videoDialog) {
+          closeVlog();
+        }
+      });
+    </script>
+  )
+}

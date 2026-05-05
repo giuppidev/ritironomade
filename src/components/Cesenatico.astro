@@ -1,0 +1,92 @@
+---
+import { Calendar, MapPin, Users } from "@lucide/astro";
+import { scheduleData } from "../data/cesenatico";
+import WeekSchedule from "./WeekSchedule.astro";
+---
+
+<section class="py-20 px-4 bg-white" id="cesenatico">
+  <div class="py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+      <h1 class="text-5xl font-light text-stone-800 text-center mb-16">
+        Edizione maggio 2026
+      </h1>
+      <p
+        class="text-lg text-stone-700 font-normal text-center mb-16 border rounded-lg md:rounded-full p-2"
+      >
+        <span class="font-semibold">Già al completo</span>. Se sei ancora
+        interessato, scrivimi a <a
+          href="mailto:info@giuppi.dev"
+          class="underline">info@giuppi.dev</a
+        >.
+      </p>
+
+      {/* Event Details Rows */}
+      <div class="space-y-8 mb-16">
+        {/* When Row */}
+        <div class="flex items-top gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <Calendar class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Quando</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              dal 28 al 31 Maggio 2026
+            </p>
+            <p class="text-stone-500">
+              4 giorni di unconference, lavoro e mare
+            </p>
+          </div>
+        </div>
+
+        {/* Where Row */}
+        <div class="flex items-top gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <MapPin class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Dove</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              <a
+                href="https://www.campingcesenatico.com/"
+                class="underline"
+                target="_blank">Cesenatico Camping Village</a
+              >, Cesenatico
+            </p>
+
+            <div class="text-stone-500 space-y-2 mt-4">
+              <p>Info utili:</p>
+              <p>
+                🏡 <b>Alloggi:</b>
+                <a
+                  href="https://www.campingcesenatico.com/"
+                  target="_blank"
+                  class="underline">Cesenatico Camping Village</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* What Row */}
+        <div class="flex items-top gap-6 py-6 border-b border-stone-200">
+          <div class="flex-shrink-0">
+            <Users class="w-8 h-8 text-primary" />
+          </div>
+          <div class="flex-1">
+            <h3 class="text-2xl font-medium text-stone-800 mb-1">Cosa</h3>
+            <p class="text-lg text-stone-700 font-medium">
+              Lavoro da remoto, workshop, chiacchiere, esperienze di mare
+            </p>
+            <p class="text-stone-500">Unconference, convivialità, mare</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-4 md:px-8 mx-auto max-w-7xl">
+    <h2 class="text-4xl font-light text-stone-800 text-center mb-8">
+      Programma Giornaliero
+    </h2>
+    <WeekSchedule data={scheduleData} />
+  </div>
+</section>

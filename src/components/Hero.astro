@@ -10,6 +10,7 @@ interface Props {
   showHomeButton?: boolean;
   videoId?: string;
   videoThumbnail?: string;
+  backgroundImage?: string;
 }
 const props = Astro.props as Props;
 
@@ -19,6 +20,8 @@ const style = props.style || "";
 const showHomeButton = props.showHomeButton || false;
 const videoId = props.videoId;
 const videoThumbnail = props.videoThumbnail;
+const desktopBackground = props.backgroundImage || background.src;
+const mobileBackground = props.backgroundImage || background2.src;
 ---
 
 <section
@@ -48,12 +51,12 @@ const videoThumbnail = props.videoThumbnail;
   )}
   <div
     class="hidden md:block absolute inset-0 bg-cover bg-center"
-    style={`background-image: url(${background.src});`}
+    style={`background-image: url(${desktopBackground});`}
   >
   </div>
   <div
     class="block md:hidden absolute inset-0 bg-cover bg-center"
-    style={`background-image: url(${background2.src});`}
+    style={`background-image: url(${mobileBackground});`}
   >
   </div>
   <div class="absolute inset-0 bg-black/40"></div>
