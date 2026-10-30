@@ -1,6 +1,7 @@
 import type { DaySchedule } from "./aosta";
 import { scheduleData as bergamoSchedule } from "./aosta";
 import { scheduleData as cesenaticoSchedule } from "./cesenatico";
+import background from "../assets/background.png";
 
 export interface EditionInfoItem {
   label: string;
@@ -8,7 +9,7 @@ export interface EditionInfoItem {
 }
 
 export interface Edition {
-  slug: "may-2026" | "january-2026" | "june-2025";
+  slug: "january-2027" | "may-2026" | "january-2026" | "june-2025";
   href: string;
   homeOrder: number;
   heroTitle: string;
@@ -36,6 +37,11 @@ export interface Edition {
     description: string;
   };
   schedule: DaySchedule[];
+  registration?: {
+    label: string;
+    href: string;
+    contactEmail: string;
+  };
   video?: {
     youtubeId: string;
     title: string;
@@ -45,9 +51,54 @@ export interface Edition {
 
 export const editions: Edition[] = [
   {
+    slug: "january-2027",
+    href: "/january-2027",
+    homeOrder: 1,
+    heroTitle: "Inverno 27",
+    title: "Edizione gennaio 2027",
+    location: "Val di Sella, Trento",
+    dateLabel: "28-31 Gennaio 2027",
+    cardDescription:
+      "28-31 gennaio 2027, Val di Sella (Trento), una casa tutta per noi vicino ad Arte Sella.",
+    image: background.src,
+    status: {
+      label: "Iscrizioni aperte",
+      html: 'Compila il <a href="#iscrizione" class="underline">modulo di iscrizione</a>.',
+    },
+    when: {
+      title: "dal 28 al 31 gennaio 2027",
+      description: "4 giorni di unconference, lavoro e montagna",
+    },
+    where: {
+      name: "Casa Dal Trozzo",
+      href: "https://www.turismosocialetrentino.it/casa-dal-trozzo/",
+      suffix: ", Valle di Sella, Borgo Valsugana (TN)",
+      usefulInfo: [
+        {
+          label: "Alloggi",
+          html: '<a href="https://www.turismosocialetrentino.it/casa-dal-trozzo/" target="_blank" class="underline">Casa Dal Trozzo</a>',
+        },
+        {
+          label: "Mappa",
+          html: '<a href="https://www.google.com/maps/search/?api=1&query=Casa+Dal+Trozzo+Valle+di+Sella+Borgo+Valsugana" target="_blank" class="underline">Apri su Google Maps</a>',
+        },
+      ],
+    },
+    what: {
+      title: "Lavoro da remoto, workshop, chiacchiere, esperienze di montagna",
+      description: "Unconference, convivialità, natura",
+    },
+    schedule: [],
+    registration: {
+      label: "Iscriviti al ritiro",
+      href: "https://docs.google.com/forms/d/1BpUHVHnVMoBcRcUDY_Ezl0IYB79WF_DLspaYkSAqsi8/viewform",
+      contactEmail: "info@giuppi.dev",
+    },
+  },
+  {
     slug: "may-2026",
     href: "/may-2026",
-    homeOrder: 1,
+    homeOrder: 2,
     heroTitle: "Estate 26",
     title: "Edizione estate 2026",
     location: "Cesenatico",
@@ -55,8 +106,8 @@ export const editions: Edition[] = [
     cardDescription: "Unconference, coworking e mare in Romagna.",
     image: "/cesenatico.jpeg",
     status: {
-      label: "Già al completo",
-      html: 'Se sei ancora interessato, scrivimi a <a href="mailto:info@giuppi.dev" class="underline">info@giuppi.dev</a>.',
+      label: "Prenotazioni terminate",
+      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="https://www.giuppi.dev/#community" target="_blank" class="underline">entra nella community</a>.',
     },
     when: {
       title: "dal 28 al 31 Maggio 2026",
@@ -82,7 +133,7 @@ export const editions: Edition[] = [
   {
     slug: "january-2026",
     href: "/january-2026",
-    homeOrder: 2,
+    homeOrder: 3,
     heroTitle: "Inverno 26",
     title: "Edizione gennaio 2026",
     location: "Costa Volpino, Bergamo",
@@ -122,7 +173,7 @@ export const editions: Edition[] = [
   {
     slug: "june-2025",
     href: "/june-2025",
-    homeOrder: 3,
+    homeOrder: 4,
     heroTitle: "Estate 25",
     title: "Edizione giugno 2025",
     location: "Introd, Aosta",
@@ -180,6 +231,10 @@ export const editions: Edition[] = [
 export const homeEditions = editions
   .slice()
   .sort((first, second) => first.homeOrder - second.homeOrder);
+
+export function getPastEditions(edition: Edition) {
+  return homeEditions.filter((past) => past.homeOrder > edition.homeOrder);
+}
 
 export function getEdition(slug: Edition["slug"]) {
   return editions.find((edition) => edition.slug === slug);

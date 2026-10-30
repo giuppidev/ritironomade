@@ -1,6 +1,6 @@
 ---
 import { Calendar, MapPin, Play, Users } from "@lucide/astro";
-import type { Edition } from "../data/editions";
+import { getPastEditions, type Edition } from "../data/editions";
 import WeekSchedule from "./WeekSchedule.astro";
 
 interface Props {
@@ -9,6 +9,8 @@ interface Props {
 
 const { edition } = Astro.props;
 const video = edition.video;
+const registration = edition.registration;
+const pastEditions = getPastEditions(edition);
 const videoButtonId = `vlog-card-${edition.slug}`;
 const videoDialogId = `vlog-dialog-${edition.slug}`;
 const videoCloseId = `vlog-close-${edition.slug}`;
@@ -120,15 +122,62 @@ const videoIframeId = `vlog-iframe-${edition.slug}`;
           </div>
         </div>
       </div>
+
+      {
+        registration && (
+          <div id="iscrizione" class="text-center mb-16 scroll-mt-8">
+            <a
+              href={registration.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 text-lg rounded-full shadow-lg transition-colors"
+            >
+              {registration.label}
+            </a>
+            <p class="text-stone-500 mt-4">
+              Per domande:{" "}
+              <a href={`mailto:${registration.contactEmail}`} class="underline">
+                {registration.contactEmail}
+              </a>
+            </p>
+          </div>
+        )
+      }
     </div>
   </div>
 
-  <div class="px-4 md:px-8 mx-auto max-w-7xl">
-    <h2 class="text-4xl font-light text-stone-800 text-center mb-8">
-      Programma Giornaliero
-    </h2>
-    <WeekSchedule data={edition.schedule} />
-  </div>
+  {
+    edition.schedule.length > 0 ? (
+      <div class="px-4 md:px-8 mx-auto max-w-7xl">
+        <h2 class="text-4xl font-light text-stone-800 text-center mb-8">
+          Programma Giornaliero
+        </h2>
+        <WeekSchedule data={edition.schedule} />
+      </div>
+    ) : (
+      <div class="px-4 mx-auto max-w-3xl text-center">
+        <h2 class="text-4xl font-light text-stone-800 mb-8">
+          Programma in fase di definizione
+        </h2>
+        <p class="text-lg leading-relaxed text-stone-600 mb-8">
+          Il formato resta quello delle edizioni passate: unconference, giornate
+          di lavoro condivise, attività nel posto. Il programma arriva nelle
+          prossime settimane. Intanto puoi vedere com'erano le edizioni
+          precedenti.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3">
+          {pastEditions.map((past) => (
+            <a
+              href={past.href}
+              class="inline-block rounded-full border border-stone-300 px-5 py-2 text-stone-700 hover:bg-stone-100 transition-colors"
+            >
+              {past.heroTitle}
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
 </section>
 
 {
