@@ -63,7 +63,7 @@ export const editions: Edition[] = [
     image: background.src,
     status: {
       label: "Iscrizioni aperte",
-      html: 'Compila il <a href="#iscrizione" class="underline">modulo di iscrizione</a>.',
+      html: 'Lasciaci la tua email: <a href="/#partecipa" class="underline">ti avvisiamo appena aprono le iscrizioni</a>.',
     },
     when: {
       title: "dal 28 al 31 gennaio 2027",
@@ -107,7 +107,7 @@ export const editions: Edition[] = [
     image: "/cesenatico.jpeg",
     status: {
       label: "Prenotazioni terminate",
-      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="https://www.giuppi.dev/#community" target="_blank" class="underline">entra nella community</a>.',
+      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="/#partecipa" class="underline">entra nella community</a>.',
     },
     when: {
       title: "dal 28 al 31 Maggio 2026",
@@ -129,6 +129,11 @@ export const editions: Edition[] = [
       description: "Unconference, convivialità, mare",
     },
     schedule: cesenaticoSchedule,
+    video: {
+      youtubeId: "Lu_6hTOwLbk",
+      title: "Video vlog dell'edizione maggio 2026",
+      description: "Guarda il racconto dell'edizione a Cesenatico.",
+    },
   },
   {
     slug: "january-2026",
@@ -142,7 +147,7 @@ export const editions: Edition[] = [
     image: "/Ciar.jpeg",
     status: {
       label: "Prenotazioni terminate",
-      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="https://www.giuppi.dev/#community" target="_blank" class="underline">entra nella community</a>.',
+      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="/#partecipa" class="underline">entra nella community</a>.',
     },
     when: {
       title: "dal 22 al 25 Gennaio 2026",
@@ -182,7 +187,7 @@ export const editions: Edition[] = [
     image: "/aosta.jpeg",
     status: {
       label: "Prenotazioni terminate",
-      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="https://www.giuppi.dev/#community" target="_blank" class="underline">entra nella community</a>.',
+      html: 'Se vuoi rimanere aggiornato sulle prossime edizioni <a href="/#partecipa" class="underline">entra nella community</a>.',
     },
     when: {
       title: "dal 19 al 22 Giugno 2025",

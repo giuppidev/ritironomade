@@ -1,0 +1,148 @@
+---
+// src/pages/[slug].astro
+// Edition detail page.
+import Closing from "../components/Closing.astro";
+import EditionList from "../components/EditionList.astro";
+import Header from "../components/Header.astro";
+import Media from "../components/Media.astro";
+import { editions, type Edition } from "../data/editions";
+import { editionMedia } from "../data/media";
+import { activityLabels, sortedActivities, typicalDay } from "../data/retreat";
+import Layout from "../layouts/Layout.astro";
+
+export function getStaticPaths() {
+  return editions.map((edition) => ({ params: { slug: edition.slug }, props: { edition } }));
+}
+
+const { edition } = Astro.props as { edition: Edition };
+const facts = [
+  { label: "Quando", title: edition.when.title, text: edition.when.description },
+  { label: "Cosa", title: edition.what.title, text: edition.what.description },
+];
+---
+
+<Layout title={`${edition.heroTitle} · ${edition.location} · Ritiro Nomade`}>
+  <Header />
+
+  <section class="on-dark relative isolate flex min-h-[85svh] items-end overflow-hidden bg-[var(--night)]">
+    <Media slot={editionMedia[edition.slug]} eager class="!absolute inset-0 -z-10" overlayClass="bg-gradient-to-t from-black/85 via-black/20 to-black/40" />
+    <div class="mx-auto w-full max-w-7xl px-6 pb-16 pt-40 md:px-14">
+      <a href="/#edizioni" class="mb-8 inline-block text-[12px] uppercase tracking-[0.1em] text-[var(--paper)]/70 hover:text-[var(--paper)]">← Tutte le edizioni</a>
+      <p class="eyebrow mb-5 text-[var(--ember)]">{edition.title}</p>
+      <h1 class="serif h-giant">{edition.heroTitle}</h1>
+      <p class="lead mt-6 text-[var(--paper-2)]/80">{edition.location} · {edition.dateLabel}</p>
+    </div>
+  </section>
+
+  <section class="border-b border-black/15 bg-[var(--paper-2)] px-6 py-6 md:px-14">
+    <div class="mx-auto flex max-w-7xl flex-col justify-between gap-3 md:flex-row md:items-center">
+      <p><span class="font-semibold">{edition.status.label}.</span> <span class="[&_a]:underline" set:html={edition.status.html} /></p>
+      {
+        edition.registration && (
+          <a href={edition.registration.href} target="_blank" rel="noreferrer" class="btn btn-dark w-fit">
+            {edition.registration.label} →
+          </a>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="bg-[var(--paper)] px-6 pt-24 md:px-14 md:pt-32">
+    <div class="mx-auto grid max-w-7xl gap-12 md:grid-cols-3">
+      {
+        facts.map((fact) => (
+          <div class="border-t border-black/15 pt-6">
+            <p class="eyebrow mb-4 text-[var(--ember)]">{fact.label}</p>
+            <p class="serif mb-3 text-2xl leading-tight text-black">{fact.title}</p>
+            <p class="text-[var(--stone)]">{fact.text}</p>
+          </div>
+        ))
+      }
+      <div class="border-t border-black/15 pt-6">
+        <p class="eyebrow mb-4 text-[var(--ember)]">Dove</p>
+        <p class="serif mb-3 text-2xl leading-tight text-black">
+          <a href={edition.where.href} target="_blank" rel="noreferrer" class="underline decoration-1 underline-offset-4">{edition.where.name}</a>{edition.where.suffix}
+        </p>
+        <ul class="space-y-1 text-[var(--stone)]">
+          {edition.where.usefulInfo.map((item) => <li><b class="font-medium">{item.label}:</b> <span class="[&_a]:underline" set:html={item.html} /></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[var(--paper)] px-6 py-24 md:px-14 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="serif h-section mb-14 text-black">Programma</h2>
+      {
+        edition.schedule.length > 0 ? (
+          <>
+            <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+              {edition.schedule.map((day) => (
+                <div>
+                  <p class="serif mb-1 text-sm italic opacity-60">{day.date}</p>
+                  <h3 class="serif mb-6 border-b border-[var(--line)] pb-4 text-2xl text-black">{day.title}</h3>
+                  <ol class="space-y-4">
+                    {sortedActivities(day).map((activity) => (
+                      <li class="grid grid-cols-[3.5rem_1fr] gap-3 text-sm">
+                        <span class="opacity-60">{activity.time.split("–")[0].trim()}</span>
+                        <span>
+                          {activity.title}
+                          <span class="eyebrow ml-1 !text-[0.6rem] text-[var(--ember)]">{activityLabels[activity.type]}</span>
+                          {activity.description && <span class="block opacity-55">{activity.description}</span>}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div class="grid gap-12 md:grid-cols-2">
+            <div>
+              <h3 class="serif mb-6 text-3xl text-black">In <em>definizione</em></h3>
+              <p class="max-w-md opacity-75">
+                Il formato resta quello delle edizioni passate: unconference, giornate di lavoro condivise, attività nel posto. Intanto, ecco una giornata tipo.
+              </p>
+            </div>
+            <ol>
+              {sortedActivities(typicalDay).map((activity) => (
+                <li class="grid grid-cols-[5rem_1fr] border-t border-[var(--line)] py-4">
+                  <span class="serif text-xl font-light">{activity.time.split("–")[0].trim()}</span>
+                  <span>{activity.title}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    edition.video && (
+      <section class="on-dark bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+        <button type="button" data-youtube={edition.video.youtubeId} aria-label={`Guarda ${edition.video.title}`} class="group relative mx-auto block w-full max-w-7xl text-left text-[var(--paper)]">
+          <span class="relative block aspect-video overflow-hidden rounded-xl bg-black lg:aspect-[21/9]">
+            <img src={`https://img.youtube.com/vi/${edition.video.youtubeId}/maxresdefault.jpg`} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105" />
+            <span class="absolute inset-0 hidden bg-gradient-to-t from-black/70 via-transparent to-transparent md:block"></span>
+            <span class="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--paper)] pl-1 text-lg text-black transition duration-300 group-hover:scale-110 md:h-20 md:w-20 md:text-xl">▶</span>
+          </span>
+          <span class="mt-5 block md:absolute md:bottom-10 md:left-10 md:mt-0">
+            <span class="eyebrow mb-2 block opacity-80">Video vlog</span>
+            <span class="serif block text-2xl md:text-3xl lg:text-4xl">{edition.video.title}</span>
+          </span>
+        </button>
+      </section>
+    )
+  }
+
+  <section class="on-dark border-t border-[var(--line)] bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="serif h-section mb-12">Altre <em>edizioni</em></h2>
+      <EditionList exclude={edition.slug} />
+    </div>
+  </section>
+
+  <Closing form={false} />
+</Layout>

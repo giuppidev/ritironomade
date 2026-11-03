@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# original event media (large, processed copies live in public/media)
+medias/

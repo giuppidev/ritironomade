@@ -1,0 +1,59 @@
+---
+// src/components/Header.astro
+// Transparent top bar over the hero, Pampero-style: wordmark left, centred nav.
+// Below lg the nav collapses into a minimal hamburger with a full-screen menu.
+import Logo from "./Logo.astro";
+
+const links = [
+  { href: "/#ritiro", label: "Il ritiro" },
+  { href: "/#giornata", label: "Programma" },
+  { href: "/#unconference", label: "Unconference" },
+  { href: "/#edizioni", label: "Edizioni" },
+  { href: "/#faq", label: "FAQ" },
+];
+---
+
+<header class="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 pt-7 text-[var(--paper)] md:px-[3.5vw] md:pt-[1.5vw]">
+  <Logo />
+  <nav class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-[2.4vw] lg:flex">
+    {
+      links.map((link) => (
+        <a href={link.href} class="text-[max(14px,0.9vw)] font-medium text-[var(--paper)]/85 transition-colors duration-300 hover:text-[var(--paper)]">
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+  <button type="button" data-menu-open aria-label="Apri il menu" aria-expanded="false" class="flex h-10 w-10 flex-col items-end justify-center gap-[7px] lg:hidden">
+    <span class="block h-px w-7 bg-current"></span>
+    <span class="block h-px w-5 bg-current"></span>
+  </button>
+</header>
+
+<div data-menu class="on-dark fixed inset-0 z-50 hidden flex-col bg-[var(--ink)] px-6 pb-10 pt-7 lg:hidden">
+  <div class="flex items-center justify-between">
+    <Logo />
+    <button type="button" data-menu-close aria-label="Chiudi il menu" class="relative h-10 w-10">
+      <span class="absolute left-1.5 top-1/2 block h-px w-7 rotate-45 bg-current"></span>
+      <span class="absolute left-1.5 top-1/2 block h-px w-7 -rotate-45 bg-current"></span>
+    </button>
+  </div>
+  <nav class="mt-auto flex flex-col gap-5">
+    {links.map((link) => <a href={link.href} class="serif text-4xl leading-tight">{link.label}</a>)}
+  </nav>
+  <a href="/#partecipa" class="btn btn-light mt-12 w-fit">Partecipa</a>
+</div>
+
+<script>
+  const menu = document.querySelector<HTMLElement>("[data-menu]");
+  const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    menu?.classList.toggle("flex", open);
+    openButton?.setAttribute("aria-expanded", String(open));
+    document.documentElement.style.overflow = open ? "hidden" : "";
+  };
+  openButton?.addEventListener("click", () => setOpen(true));
+  menu?.querySelector("[data-menu-close]")?.addEventListener("click", () => setOpen(false));
+  menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setOpen(false)));
+</script>

@@ -1,0 +1,58 @@
+---
+// src/components/VideoModal.astro
+// Single YouTube lightbox opened by any element carrying data-youtube="<id>".
+---
+
+<div
+  id="video-modal"
+  class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/85 px-4 backdrop-blur-sm"
+>
+  <div class="relative aspect-video w-full max-w-6xl">
+    <button
+      type="button"
+      data-video-close
+      class="absolute -top-12 right-0 text-3xl leading-none text-white/80 transition-colors hover:text-white"
+      aria-label="Chiudi video"
+    >
+      ✕
+    </button>
+    <iframe
+      class="h-full w-full rounded-md"
+      src=""
+      title="Video del ritiro"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById("video-modal");
+  const iframe = modal?.querySelector("iframe");
+
+  const close = () => {
+    if (!modal || !iframe) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    iframe.src = "";
+    document.body.style.overflow = "";
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-youtube]").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      if (!modal || !iframe) return;
+      iframe.src = `https://www.youtube.com/embed/${trigger.dataset.youtube}?autoplay=1`;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  modal?.querySelector("[data-video-close]")?.addEventListener("click", close);
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) close();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+  });
+</script>

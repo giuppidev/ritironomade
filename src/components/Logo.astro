@@ -1,0 +1,18 @@
+---
+// src/components/Logo.astro
+// Typographic wordmark: "RITIRO NOMADE" on one line, both words the same size, in Instrument Serif.
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href = "/", class: className = "" } = Astro.props;
+---
+
+<a
+  href={href}
+  aria-label="Ritiro Nomade"
+  class={`inline-block shrink-0 whitespace-nowrap font-['Instrument_Serif',serif] text-[26px] leading-none tracking-[0.03em] md:text-[max(26px,1.9vw)] ${className}`}
+>
+  RITIRO NOMADE
+</a>

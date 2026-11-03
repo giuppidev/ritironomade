@@ -1,27 +1,196 @@
 ---
-import Contacts from "../components/Contacts.astro";
-import FAQ from "../components/FAQ.astro";
-import Footer from "../components/Footer.astro";
-import Hero from "../components/Hero.astro";
-import RetreatInfo from "../components/RetreatInfo.astro";
-import RetreatValues from "../components/RetreatValues.astro";
-import Waitlist from "../components/Waitlist.astro";
-import Editions from "../components/Editions.astro";
+// src/pages/index.astro
+// Homepage. Flow: hero → il ritiro + carosello + pilastri → giornata tipo → unconference → edizioni → chi sono → form + FAQ.
+import Closing from "../components/Closing.astro";
+import EditionList from "../components/EditionList.astro";
+import Header from "../components/Header.astro";
+import Media from "../components/Media.astro";
+import { galleryKeys } from "../data/media";
+import { activityLabels, intro, pillars, sortedActivities, typicalDay } from "../data/retreat";
 import Layout from "../layouts/Layout.astro";
-import "../styles/globals.css";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const unconferenceTraits = ["4 giorni", "Coliving", "Lavoro da remoto", "Chiacchiere sulla vita"];
+
+// The afternoon is left free: show "Attività libere" at 14:00 instead of as an all-day parallel track.
+const dayActivities = sortedActivities(typicalDay)
+  .map((activity) =>
+    activity.title === "Attività libere" ? { ...activity, time: "14:00 – 19:30", startHour: 14 } : activity,
+  )
+  .sort((first, second) => first.startHour - second.startHour);
+
 ---
 
-<Layout title="Ritiro nomade">
-  <div class="min-h-screen bg-stone-50">
-    <Hero videoId="Zfhv0X1VstY" />
-    <RetreatInfo />
-    <Editions />
-    <RetreatValues />
-    <FAQ />
-    <Waitlist />
-    <Footer />
-  </div>
+<Layout title="Ritiro Nomade · Cercatori di libertà, una scelta alla volta">
+  <Header />
+
+  <!-- Hero -->
+  <section class="on-dark relative isolate flex h-svh min-h-[600px] flex-col overflow-hidden bg-[var(--night)]">
+    <Media
+      slot="heroMontage"
+      eager
+      class="!absolute inset-0 -z-10"
+      overlayClass="bg-gradient-to-t from-black/85 via-black/20 to-black/40"
+    />
+    <div class="mt-auto w-full px-6 pb-14 md:px-[3.5vw] md:pb-[3.6vw]">
+      <h1 class="serif mb-6 text-[38px] leading-[1.1] [text-shadow:0_2px_18px_rgb(0_0_0/0.45),0_1px_3px_rgb(0_0_0/0.3)] md:mb-[2.2vw] md:text-[3.8vw] md:[text-shadow:none]">
+        Cercatori di libertà.<br /><em>Una scelta alla volta.</em>
+      </h1>
+      <p class="mb-10 max-w-[34rem] text-[17px] leading-[1.45] text-[var(--paper)]/80 [text-shadow:0_1px_10px_rgb(0_0_0/0.5)] md:[text-shadow:none] md:mb-[2.4vw] md:max-w-[40vw] md:text-[max(15px,1.3vw)]">
+        Un ritiro nella natura per chi lavora da remoto.<br class="hidden md:inline" /> Quattro giorni di condivisione, confronto e domande. Tante domande.
+      </p>
+      <div class="flex flex-wrap gap-3 md:gap-[1.1vw]">
+        <a href="#partecipa" class="btn btn-light md:!px-[1.7vw] md:!py-[0.75vw] md:!text-[max(12px,0.8vw)]">Partecipa</a>
+        <a href="#ritiro" class="btn btn-ghost md:!px-[1.7vw] md:!py-[0.75vw] md:!text-[max(12px,0.8vw)]">Scopri di più</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Il ritiro + carosello -->
+  <section id="ritiro" class="on-dark relative bg-[var(--ink)] py-24 md:py-32">
+    <div class="mx-auto max-w-6xl px-6 md:px-14 xl:px-0">
+      <div class="grid gap-10 md:grid-cols-[1.2fr_2fr] md:gap-12">
+        <div>
+          <p class="eyebrow mb-5 text-[var(--ember)]">Il ritiro</p>
+          <h2 class="serif h-section">Che cos'è un <em>ritiro nomade?</em></h2>
+        </div>
+        <p class="lead max-w-xl text-[var(--stone)]">{intro}</p>
+      </div>
+    </div>
+
+    <div class="mt-16 md:mt-20" data-carousel>
+      <div data-carousel-track class="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 md:px-14">
+        {
+          galleryKeys.map((key) => (
+            <Media slot={key} class="aspect-[4/5] w-[72vw] shrink-0 snap-start rounded-xl sm:w-[42vw] lg:w-[26vw]" />
+          ))
+        }
+      </div>
+      <div class="mt-8 flex items-center justify-between px-6 md:px-14">
+        <div class="flex items-center gap-2" data-carousel-dots>
+          {galleryKeys.map((_, index) => (
+            <button type="button" aria-label={`Foto ${index + 1}`} class="h-1.5 w-1.5 rounded-full bg-[var(--paper-2)]/30 transition-all duration-300" />
+          ))}
+        </div>
+        <div class="flex gap-2">
+          <button type="button" data-carousel-prev aria-label="Foto precedente" class="btn btn-ghost !h-11 !w-11 !p-0">←</button>
+          <button type="button" data-carousel-next aria-label="Foto successiva" class="btn btn-ghost !h-11 !w-11 !p-0">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto mt-20 grid max-w-6xl gap-10 px-6 md:mt-28 md:grid-cols-3 md:gap-12 md:px-14 xl:px-0">
+      {
+        pillars.map((pillar) => (
+          <div class="border-t border-[var(--line)] pt-6">
+            <h3 class="serif mb-3 text-2xl">{pillar.title}</h3>
+            <p class="leading-relaxed text-[var(--stone)]">{pillar.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Programma: giornata tipo -->
+  <section id="giornata" class="on-dark relative overflow-hidden border-t border-[var(--line)] bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+    <div class="contours absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto grid max-w-6xl items-start gap-14 md:grid-cols-2">
+      <Media slot="laptopOutdoors" class="aspect-[4/5] rounded-xl md:sticky md:top-12" />
+      <div>
+        <p class="eyebrow mb-5 text-[var(--ember)]">Programma</p>
+        <h2 class="serif h-section mb-10">Una giornata <em>tipo</em></h2>
+        <ol class="mb-10 border-t border-[var(--line)]">
+          {
+            dayActivities.map((activity) => (
+              <li class="grid grid-cols-[4rem_1fr_auto] items-baseline gap-4 border-b border-[var(--line)] py-4">
+                <span class="serif text-[var(--paper)]">{activity.time.split("–")[0].trim()}</span>
+                <span class="text-[var(--stone)]">{activity.title}</span>
+                <span class="eyebrow !text-[10px] text-[var(--ember)]">{activityLabels[activity.type]}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <a href="#partecipa" class="btn btn-light">Partecipa</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Unconference -->
+  <section id="unconference" class="overflow-hidden bg-[var(--paper)] text-[var(--moss)]">
+    <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-24 md:grid-cols-2 md:px-14 md:py-32">
+      <div>
+        <p class="eyebrow mb-5 text-[var(--ember)]">Il formato</p>
+        <h2 class="serif h-section mb-6 text-black">Unconference</h2>
+        <p class="lead mb-12 max-w-md">
+          Niente palco e niente scaletta calata dall'alto: il programma lo costruiscono i partecipanti, una sessione alla volta.
+        </p>
+        <ul class="grid max-w-md grid-cols-2 gap-x-8 border-t border-black/15">
+          {unconferenceTraits.map((trait) => <li class="serif border-b border-black/15 py-4 text-xl text-black">{trait}</li>)}
+        </ul>
+      </div>
+      <Media slot="unconferenceMontage" class="aspect-[4/5] rounded-xl md:aspect-[4/5]" />
+    </div>
+  </section>
+
+  <!-- Edizioni -->
+  <section id="edizioni" class="on-dark bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <p class="eyebrow mb-5 text-[var(--ember)]">Edizioni</p>
+          <h2 class="serif h-section">Ogni stagione, <em>una casa.</em></h2>
+        </div>
+        <p class="lead max-w-sm text-[var(--stone)]">Luoghi diversi, lo stesso modo di vivere lavoro, community e tempo insieme.</p>
+      </div>
+      <EditionList />
+    </div>
+  </section>
+
+  <!-- Chi lo organizza -->
+  <section id="chi-sono" class="bg-[var(--paper)] px-6 py-24 md:px-14 md:py-32">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[1fr_2fr] md:gap-16">
+      <img
+        src="/media/giuppi.webp"
+        alt="Giuppi durante un viaggio in montagna"
+        loading="lazy"
+        class="aspect-[4/5] w-full max-w-sm rounded-xl object-cover"
+      />
+      <div>
+        <p class="eyebrow mb-5 text-[var(--ember)]">Chi lo organizza</p>
+        <h2 class="serif h-section mb-6 text-black">Ciao, sono <em>Giuppi.</em></h2>
+        <p class="lead mb-8 max-w-xl text-[var(--stone)]">
+          Mi chiamo Giuseppe Funicello. Dopo 10 anni da freelance developer ora mi dedico full time ai miei progetti, e parlo
+          di AI (e di me) su YouTube e nella newsletter del giovedì.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://www.giuppi.dev" target="_blank" rel="noreferrer" class="btn btn-ghost-dark">giuppi.dev</a>
+          <a href="https://www.youtube.com/@giuppidev" target="_blank" rel="noreferrer" class="btn btn-ghost-dark">YouTube</a>
+          <a href="https://www.giuppi.dev/discord" target="_blank" rel="noreferrer" class="btn btn-ghost-dark">Discord</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Closing />
 </Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+    const track = root.querySelector<HTMLElement>("[data-carousel-track]")!;
+    const dots = [...root.querySelectorAll<HTMLButtonElement>("[data-carousel-dots] button")];
+    const slides = [...track.children] as HTMLElement[];
+    const step = () => (slides[1]?.offsetLeft ?? 0) - (slides[0]?.offsetLeft ?? 0);
+    const current = () => Math.round(track.scrollLeft / (step() || 1));
+    const go = (index: number) => track.scrollTo({ left: Math.max(0, Math.min(index, slides.length - 1)) * step() });
+    const sync = () => {
+      const active = Math.min(current(), dots.length - 1);
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("!w-6", index === active);
+        dot.classList.toggle("!bg-[var(--paper-2)]", index === active);
+      });
+    };
+    root.querySelector("[data-carousel-prev]")?.addEventListener("click", () => go(current() - 1));
+    root.querySelector("[data-carousel-next]")?.addEventListener("click", () => go(current() + 1));
+    dots.forEach((dot, index) => dot.addEventListener("click", () => go(index)));
+    track.addEventListener("scroll", sync, { passive: true });
+    sync();
+  });
+</script>
