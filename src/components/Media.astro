@@ -1,0 +1,83 @@
+---
+// src/components/Media.astro
+// Renders a media slot: a photo or a muted looping video.
+// Eager videos (the hero) autoplay right away; the others load and play only while on screen.
+// `still` shows a video's poster instead of the video itself.
+import { media, type MediaKey, type MediaSlot } from "../data/media";
+
+interface Props {
+  slot: MediaKey | MediaSlot;
+  class?: string;
+  mediaClass?: string;
+  eager?: boolean;
+  still?: boolean;
+  overlayClass?: string;
+}
+
+const {
+  slot,
+  class: className = "",
+  mediaClass = "",
+  eager = false,
+  still = false,
+  overlayClass,
+} = Astro.props;
+const item: MediaSlot = typeof slot === "string" ? media[slot] : slot;
+const portrait = "(max-width: 767px) and (orientation: portrait)";
+---
+
+<figure class={`relative overflow-hidden ${className}`}>
+  {
+    item.kind === "video" && !still ? (
+      <video
+        class={`h-full w-full object-cover ${mediaClass}`}
+        poster={item.poster}
+        data-mobile-poster={item.mobile?.poster}
+        autoplay={eager}
+        muted
+        loop
+        playsinline
+        preload={eager ? "auto" : "none"}
+        data-lazy-video={eager ? undefined : ""}
+        aria-label={item.alt}
+      >
+        {item.mobile && <source src={item.mobile.src} media={portrait} type="video/mp4" />}
+        <source src={item.src} type="video/mp4" />
+      </video>
+    ) : (
+      <img
+        class={`h-full w-full object-cover ${mediaClass}`}
+        src={item.kind === "video" ? item.poster : item.src}
+        alt={item.alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+    )
+  }
+  {overlayClass && <div class={`absolute inset-0 ${overlayClass}`} />}
+</figure>
+
+<script>
+  // Phones held upright get the portrait poster too, so the first frame matches the video.
+  if (matchMedia("(max-width: 767px) and (orientation: portrait)").matches) {
+    document.querySelectorAll<HTMLVideoElement>("video[data-mobile-poster]").forEach((video) => {
+      video.poster = video.dataset.mobilePoster!;
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const { target, isIntersecting } of entries) {
+        const video = target as HTMLVideoElement;
+        if (isIntersecting) {
+          if (video.preload === "none") video.preload = "auto";
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      }
+    },
+    { rootMargin: "200px 0px" },
+  );
+  document.querySelectorAll<HTMLVideoElement>("video[data-lazy-video]").forEach((video) => observer.observe(video));
+</script>

@@ -1,0 +1,113 @@
+---
+// src/components/Closing.astro
+// "Next retreat" CTA, FAQ and footer shared by every page.
+// The signup form lives on the homepage only; other pages link to it.
+import { faqItems } from "../data/faq";
+import { nextEdition } from "../data/retreat";
+import Logo from "./Logo.astro";
+
+interface Props {
+  form?: boolean;
+}
+
+const { form = true } = Astro.props;
+const footerColumns = [
+  {
+    title: "Navigazione",
+    links: [
+      { href: "/#ritiro", label: "Il ritiro" },
+      { href: "/#giornata", label: "Programma" },
+      { href: "/#unconference", label: "Unconference" },
+      { href: "/#edizioni", label: "Edizioni" },
+      { href: "/#faq", label: "Domande frequenti" },
+    ],
+  },
+  {
+    title: "Seguici",
+    links: [
+      { href: "mailto:info@giuppi.dev", label: "info@giuppi.dev" },
+      { href: "https://www.giuppi.dev/discord", label: "Discord" },
+    ],
+  },
+  {
+    title: "Prossima edizione",
+    links: [{ href: `/${nextEdition.slug}`, label: `${nextEdition.heroTitle} · ${nextEdition.location}` }],
+  },
+];
+---
+
+<section id="partecipa" class="on-dark relative isolate scroll-mt-10 overflow-hidden bg-[var(--ink)] px-6 py-28 text-center md:py-36" data-waitlist-root>
+  <div class="contours absolute inset-0 -z-10" aria-hidden="true"></div>
+  <p class="eyebrow mb-6 text-[var(--ember)]">Prossimo ritiro</p>
+  <h2 class="serif mb-5 text-[clamp(36px,5vw,64px)] leading-[1.05]">Vuoi partecipare al <em>prossimo ritiro?</em></h2>
+  <p class="lead mx-auto mb-14 max-w-sm text-[var(--stone)]">Ti scriviamo appena aprono le iscrizioni. Una mail ogni tanto, niente spam.</p>
+  {
+    form ? (
+      <>
+        <form data-waitlist class="mx-auto flex max-w-md flex-col items-center gap-8">
+          <label class="w-full text-left">
+            <span class="mb-1 block text-[11px] uppercase tracking-[0.1em] text-[var(--paper)]/55">Email *</span>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="nome@esempio.it"
+              class="w-full border-b border-[var(--paper)]/30 bg-transparent py-3 text-[var(--paper)] placeholder:text-[var(--paper)]/35 focus:border-[var(--paper)] focus:outline-none"
+            />
+          </label>
+          <button type="submit" class="btn btn-light">Iscriviti alla lista</button>
+        </form>
+        <p data-waitlist-success class="mt-6 hidden">Grazie! Ti scriveremo presto.</p>
+        <p data-waitlist-error class="mt-6 hidden text-red-300">Qualcosa è andato storto, riprova più tardi.</p>
+      </>
+    ) : (
+      <a href="/#partecipa" class="btn btn-light">Partecipa</a>
+    )
+  }
+</section>
+
+<section id="faq" class="bg-[var(--paper)] px-6 py-24 text-[var(--moss)] md:px-14 md:py-32">
+  <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1fr_1.4fr]">
+    <div>
+      <p class="eyebrow mb-6 text-[var(--ember)]">Domande frequenti</p>
+      <h2 class="serif h-section text-black">Prima di <em>partire.</em></h2>
+    </div>
+    <div class="border-t border-[var(--line)]">
+      {
+        faqItems.map((item) => (
+          <details class="group border-b border-[var(--line)]">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-base text-[var(--moss)] transition-colors hover:text-black md:text-[15px]">
+              <span>{item.question}</span>
+              <span class="faq-icon text-xl font-light transition">+</span>
+            </summary>
+            <p class="max-w-2xl pb-6 leading-relaxed text-[var(--stone)] [&_a]:underline" set:html={item.answerHtml || item.answer} />
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-[var(--line)] bg-[var(--paper)] px-6 pb-10 pt-14 text-[var(--moss)] md:px-14 md:pt-16">
+  <div class="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+    <div><Logo class="opacity-80" /></div>
+    {
+      footerColumns.map((column) => (
+        <div>
+          <p class="eyebrow mb-4 text-[var(--moss)]/65">{column.title}</p>
+          <nav class="flex flex-col gap-3">
+            {column.links.map((link) => (
+              <a href={link.href} class="text-[12px] tracking-wide text-[var(--moss)]/75 transition-colors hover:text-[var(--moss)]">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      ))
+    }
+  </div>
+  <div class="mx-auto mt-12 flex max-w-6xl flex-col gap-2 border-t border-black/15 pt-6 text-[11px] tracking-wide text-[var(--moss)]/75 md:flex-row md:justify-between">
+    <p>© {new Date().getFullYear()} Ritiro Nomade</p>
+    <p>Creato da <a href="https://www.giuppi.dev" target="_blank" rel="noreferrer" class="underline underline-offset-2">Giuppi</a></p>
+  </div>
+</footer>
