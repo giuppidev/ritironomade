@@ -32,6 +32,7 @@ const portrait = "(max-width: 767px) and (orientation: portrait)";
       <video
         class={`h-full w-full object-cover ${mediaClass}`}
         poster={item.poster}
+        style={item.position ? `object-position: ${item.position}` : undefined}
         data-mobile-poster={item.mobile?.poster}
         autoplay={eager}
         muted
@@ -49,6 +50,7 @@ const portrait = "(max-width: 767px) and (orientation: portrait)";
         class={`h-full w-full object-cover ${mediaClass}`}
         src={item.kind === "video" ? item.poster : item.src}
         alt={item.alt}
+        style={item.position ? `object-position: ${item.position}` : undefined}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
       />

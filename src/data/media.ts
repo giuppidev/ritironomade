@@ -9,6 +9,8 @@ export interface MediaSlot {
   poster?: string;
   // Portrait crop served to phones held upright.
   mobile?: { src: string; poster: string };
+  // CSS object-position for crops that must keep a subject in frame.
+  position?: string;
   alt: string;
 }
 
@@ -34,6 +36,10 @@ export const media = {
     "unconferenceMontage",
     "Sessioni di unconference: in cerchio sul prato, accanto al camper, in veranda",
   ),
+  circleAosta: {
+    ...photo("circleAosta", "Cerchio sul prato con le montagne della Valle d'Aosta sullo sfondo"),
+    position: "right center",
+  },
   campfireGroup: photo("campfireGroup", "Gruppo seduto davanti al camino durante un talk"),
   longTable: photo("longTable", "Tavolata lunga sotto il tetto di canne, tutti sorridono"),
   workshopCircle: clip("workshopCircle", "Unconference in cerchio sotto i pini, accanto al camper"),
@@ -61,6 +67,7 @@ export const editionMedia: Record<Edition["slug"], MediaSlot> = {
 
 // Carousel moments on the homepage, in display order.
 export const galleryKeys: MediaKey[] = [
+  "circleAosta",
   "campfireGroup",
   "laptopOutdoors",
   "longTable",
