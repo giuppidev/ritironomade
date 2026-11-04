@@ -7,11 +7,13 @@ import WaitlistScript from "../components/WaitlistScript.astro";
 
 interface Props {
   title: string;
+  socialTitle?: string;
   description?: string;
 }
 
 const {
   title,
+  socialTitle = title,
   description = "Quattro giorni nella natura per condividere casa, lavoro e idee con persone che lavorano da remoto.",
 } = Astro.props;
 const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
@@ -23,7 +25,7 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={socialTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />

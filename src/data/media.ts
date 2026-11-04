@@ -31,6 +31,7 @@ export const media = {
     ),
     mobile: { src: "/media/heroMontage-mobile.mp4", poster: "/media/heroMontage-mobile-poster.webp" },
   },
+  dayMontage: clip("dayMontage", "Una giornata al ritiro: si cucina insieme, si lavora, si gioca, si cammina e si suona la chitarra"),
   laptopOutdoors: clip("laptopOutdoors", "Persone al laptop sul tavolo verde all'aperto"),
   unconferenceMontage: clip(
     "unconferenceMontage",
