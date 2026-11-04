@@ -28,19 +28,20 @@ const dayActivities = sortedActivities(typicalDay)
     <Media
       slot="heroMontage"
       eager
+      mediaClass="[filter:saturate(1.2)_contrast(1.05)]"
       class="!absolute inset-0 -z-10"
-      overlayClass="bg-gradient-to-t from-black/85 via-black/20 to-black/40"
+      overlayClass="bg-[linear-gradient(to_top,#000_0%,rgb(0_0_0/0.82)_18%,rgb(0_0_0/0.45)_42%,rgb(0_0_0/0.08)_68%,rgb(0_0_0/0.35)_100%)]"
     />
-    <div class="mt-auto w-full px-6 pb-14 md:px-[3.5vw] md:pb-[3.6vw]">
-      <h1 class="serif mb-6 text-[38px] leading-[1.1] [text-shadow:0_2px_18px_rgb(0_0_0/0.45),0_1px_3px_rgb(0_0_0/0.3)] md:mb-[2.2vw] md:text-[3.8vw] md:[text-shadow:none]">
+    <div class="mt-auto w-full px-6 pb-10 md:px-[3.5vw] md:pb-[3.6vw]">
+      <h1 class="serif mb-4 text-[min(8vw,44px)] leading-[1.15] [text-shadow:0_2px_18px_rgb(0_0_0/0.45),0_1px_3px_rgb(0_0_0/0.3)] md:mb-[2.2vw] md:text-[3.8vw] md:[text-shadow:none]">
         Cercatori di libertà.<br /><em>Una scelta alla volta.</em>
       </h1>
-      <p class="mb-10 max-w-[34rem] text-[17px] leading-[1.45] text-[var(--paper)]/80 [text-shadow:0_1px_10px_rgb(0_0_0/0.5)] md:[text-shadow:none] md:mb-[2.4vw] md:max-w-[40vw] md:text-[max(15px,1.3vw)]">
+      <p class="mb-6 max-w-[34rem] text-[15.5px] leading-[1.45] text-[var(--paper)]/80 [text-shadow:0_1px_10px_rgb(0_0_0/0.5)] md:[text-shadow:none] md:mb-[2.4vw] md:max-w-[40vw] md:text-[max(15px,1.3vw)]">
         Un ritiro nella natura per chi lavora da remoto.<br class="hidden md:inline" /> Quattro giorni di condivisione, confronto e domande. Tante domande.
       </p>
       <div class="flex flex-wrap gap-3 md:gap-[1.1vw]">
-        <a href="#partecipa" class="btn btn-light md:!px-[1.7vw] md:!py-[0.75vw] md:!text-[max(12px,0.8vw)]">Partecipa</a>
-        <a href="#ritiro" class="btn btn-ghost md:!px-[1.7vw] md:!py-[0.75vw] md:!text-[max(12px,0.8vw)]">Scopri di più</a>
+        <a href="#partecipa" class="btn btn-light !py-2.5 md:!px-[1.7vw] md:!py-[0.75vw] md:!text-[max(12px,0.8vw)]">Partecipa</a>
+        <a href="#ritiro" class="btn btn-ghost !py-2.5 md:!px-[1.7vw] md:!py-[0.75vw] md:!text-[max(12px,0.8vw)]">Scopri di più</a>
       </div>
     </div>
   </section>
