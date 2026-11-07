@@ -44,6 +44,6 @@ export const pillars = [
 ] as const;
 
 export const intro =
-  "Un ritiro nomade è un evento in stile unconference dove si uniscono nomadi digitali, lavoratori da remoto e appassionati di tecnologia per condividere esperienze e competenze. Le giornate si alternano tra sessioni di lavoro, workshop auto-organizzati dai partecipanti, attività all'aria aperta e networking informale.";
+  "Quattro giorni in una casa nella natura, dove nomadi digitali, lavoratori da remoto e appassionati di tecnologia vivono e lavorano insieme. Le giornate alternano coworking, attività all'aria aperta e networking informale. Il cuore è l'unconference: una giornata in cui il programma lo costruiscono i partecipanti.";
 
 export const isOpen = (edition: Edition) => Boolean(edition.registration);

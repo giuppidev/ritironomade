@@ -35,7 +35,7 @@ export const media = {
   laptopOutdoors: clip("laptopOutdoors", "Persone al laptop sul tavolo verde all'aperto"),
   unconferenceMontage: clip(
     "unconferenceMontage",
-    "Sessioni di unconference: in cerchio sul prato, accanto al camper, in veranda",
+    "Il cartellone dell'unconference con i post-it delle sessioni, poi le sessioni: in cerchio sul prato, accanto al camper, in veranda",
   ),
   circleAosta: {
     ...photo("circleAosta", "Cerchio sul prato con le montagne della Valle d'Aosta sullo sfondo"),
