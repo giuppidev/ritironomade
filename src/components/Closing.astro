@@ -4,6 +4,7 @@
 // The signup form lives on the homepage only; other pages link to it.
 import { faqItems } from "../data/faq";
 import { nextEdition } from "../data/retreat";
+import Deco from "./Deco.astro";
 import Logo from "./Logo.astro";
 
 interface Props {
@@ -38,6 +39,7 @@ const footerColumns = [
 
 <section id="partecipa" class="on-dark relative isolate scroll-mt-10 overflow-hidden bg-[var(--ink)] px-6 py-28 text-center md:py-36" data-waitlist-root>
   <div class="contours absolute inset-0 -z-10" aria-hidden="true"></div>
+  <Deco kind="map" class="inset-x-0 -bottom-[18vw] w-full !opacity-[0.2]" />
   <p class="eyebrow mb-6 text-[var(--ember)]">Prossimo ritiro</p>
   <h2 class="serif mb-5 text-[clamp(36px,5vw,64px)] leading-[1.05]">Vuoi partecipare al prossimo ritiro?</h2>
   <p class="lead mx-auto mb-14 max-w-sm text-[var(--stone)]">Ti scriviamo appena aprono le iscrizioni. Una mail ogni tanto, niente spam.</p>
@@ -66,7 +68,8 @@ const footerColumns = [
   }
 </section>
 
-<section id="faq" class="bg-[var(--paper)] px-6 py-24 text-[var(--moss)] md:px-14 md:py-32">
+<section id="faq" class="relative isolate overflow-hidden bg-[var(--paper)] px-6 py-24 text-[var(--moss)] md:px-14 md:py-32">
+  <Deco kind="topo" tone="ink" class="inset-x-0 -bottom-[20vw] w-full" />
   <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1fr_1.4fr]">
     <div>
       <p class="eyebrow mb-6 text-[var(--ember)]">Domande frequenti</p>
@@ -88,7 +91,8 @@ const footerColumns = [
   </div>
 </section>
 
-<footer class="border-t border-[var(--line)] bg-[var(--paper)] px-6 pb-10 pt-14 text-[var(--moss)] md:px-14 md:pt-16">
+<footer class="relative isolate overflow-hidden border-t border-[var(--line)] bg-[var(--paper)] px-6 pb-10 pt-14 text-[var(--moss)] md:px-14 md:pt-16">
+  <Deco kind="river" tone="ink" class="inset-x-0 -bottom-[44vw] w-full" />
   <div class="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
     <div><Logo class="opacity-80" /></div>
     {

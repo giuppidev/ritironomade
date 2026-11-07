@@ -2,6 +2,7 @@
 // src/pages/index.astro
 // Homepage. Flow: hero → il ritiro + carosello + pilastri → giornata tipo → unconference → edizioni → chi sono → form + FAQ.
 import Closing from "../components/Closing.astro";
+import Deco from "../components/Deco.astro";
 import EditionList from "../components/EditionList.astro";
 import Header from "../components/Header.astro";
 import Media from "../components/Media.astro";
@@ -9,7 +10,11 @@ import { galleryKeys } from "../data/media";
 import { activityLabels, intro, pillars, sortedActivities, typicalDay } from "../data/retreat";
 import Layout from "../layouts/Layout.astro";
 
-const unconferenceTraits = ["4 giorni", "Coliving", "Lavoro da remoto", "Chiacchiere sulla vita"];
+const unconferenceSteps = [
+  "Si parte da un cartellone vuoto, con gli spazi e gli orari della giornata.",
+  "Chi vuole scrive su un post-it una domanda, un tema o un talk da proporre.",
+  "I post-it finiscono sul cartellone, ognuno sceglie dove andare e la giornata prende forma.",
+];
 
 // The afternoon is left free: show "Attività libere" at 14:00 instead of as an all-day parallel track.
 const dayActivities = sortedActivities(typicalDay)
@@ -47,7 +52,8 @@ const dayActivities = sortedActivities(typicalDay)
   </section>
 
   <!-- Il ritiro + carosello -->
-  <section id="ritiro" class="on-dark relative bg-[var(--ink)] py-24 md:py-32">
+  <section id="ritiro" class="on-dark relative isolate overflow-hidden bg-[var(--ink)] py-24 md:py-32">
+    <Deco kind="map" class="inset-x-0 -top-[8vw] w-full !opacity-[0.12]" />
     <div class="mx-auto max-w-6xl px-6 md:px-14 xl:px-0">
       <div class="grid gap-10 md:grid-cols-[1.2fr_2fr] md:gap-12">
         <div>
@@ -91,8 +97,9 @@ const dayActivities = sortedActivities(typicalDay)
   </section>
 
   <!-- Programma: giornata tipo -->
-  <section id="giornata" class="on-dark relative overflow-hidden border-t border-[var(--line)] bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+  <section id="giornata" class="on-dark relative isolate overflow-hidden border-t border-[var(--line)] bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
     <div class="contours absolute inset-0" aria-hidden="true"></div>
+    <Deco kind="river" class="inset-x-0 -bottom-[12vw] w-full" />
     <div class="relative mx-auto grid max-w-6xl items-start gap-14 md:grid-cols-2">
       <Media slot="dayMontage" class="aspect-[4/5] rounded-xl md:sticky md:top-12" />
       <div>
@@ -115,24 +122,34 @@ const dayActivities = sortedActivities(typicalDay)
   </section>
 
   <!-- Unconference -->
-  <section id="unconference" class="overflow-hidden bg-[var(--paper)] text-[var(--moss)]">
-    <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-24 md:grid-cols-2 md:px-14 md:py-32">
+  <section id="unconference" class="relative isolate overflow-clip bg-[var(--paper)] text-[var(--moss)]">
+    <Deco kind="map" tone="ink" class="inset-x-0 -bottom-[14vw] w-full" />
+    <div class="mx-auto grid max-w-7xl items-start gap-12 px-6 py-24 md:grid-cols-[1.1fr_1fr] md:gap-16 md:px-14 md:py-32">
       <div>
         <p class="eyebrow mb-5 text-[var(--ember)]">Il formato</p>
-        <h2 class="serif h-section mb-6 text-black">Unconference</h2>
-        <p class="lead mb-12 max-w-md">
-          Niente palco e niente scaletta calata dall'alto: il programma lo costruiscono i partecipanti, una sessione alla volta.
+        <h2 class="serif h-section mb-6 text-black">Che cos'è <em>l'unconference?</em></h2>
+        <p class="lead mb-10 max-w-xl">
+          Una conferenza senza palco e senza scaletta. Il programma parte vuoto: ogni partecipante propone una domanda, un
+          tema o un talk, e insieme si costruisce la giornata.
         </p>
-        <ul class="grid max-w-md grid-cols-2 gap-x-8 border-t border-black/15">
-          {unconferenceTraits.map((trait) => <li class="serif border-b border-black/15 py-4 text-xl text-black">{trait}</li>)}
-        </ul>
+        <ol class="mb-8 max-w-xl border-t border-black/15">
+          {
+            unconferenceSteps.map((step, index) => (
+              <li class="grid grid-cols-[3rem_1fr] items-baseline border-b border-black/15 py-4">
+                <span class="serif text-[var(--ember)]">{String(index + 1).padStart(2, "0")}</span>
+                <span class="text-black">{step}</span>
+              </li>
+            ))
+          }
+        </ol>
       </div>
-      <Media slot="unconferenceMontage" class="aspect-[4/5] rounded-xl md:aspect-[4/5]" />
+      <Media slot="unconferenceMontage" class="order-first aspect-[4/5] rounded-xl md:order-none md:sticky md:top-12" />
     </div>
   </section>
 
   <!-- Edizioni -->
-  <section id="edizioni" class="on-dark bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+  <section id="edizioni" class="on-dark relative isolate overflow-hidden bg-[var(--ink)] px-6 py-24 md:px-14 md:py-32">
+    <Deco kind="topo" class="inset-x-0 -top-[12vw] w-full" />
     <div class="mx-auto max-w-7xl">
       <div class="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div>
@@ -146,7 +163,8 @@ const dayActivities = sortedActivities(typicalDay)
   </section>
 
   <!-- Chi lo organizza -->
-  <section id="chi-sono" class="bg-[var(--paper)] px-6 py-24 md:px-14 md:py-32">
+  <section id="chi-sono" class="relative isolate overflow-hidden bg-[var(--paper)] px-6 py-24 md:px-14 md:py-32">
+    <Deco kind="river" tone="ink" class="inset-x-0 -top-[16vw] w-full" />
     <div class="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[1fr_2fr] md:gap-16">
       <img
         src="/media/giuppi.webp"
@@ -158,8 +176,9 @@ const dayActivities = sortedActivities(typicalDay)
         <p class="eyebrow mb-5 text-[var(--ember)]">Chi lo organizza</p>
         <h2 class="serif h-section mb-6 text-black">Ciao, sono Giuppi.</h2>
         <p class="lead mb-8 max-w-xl text-[var(--stone)]">
-          Mi chiamo Giuseppe Funicello. Dopo 10 anni da freelance developer ora mi dedico full time ai miei progetti, e parlo
-          di AI (e di me) su YouTube e nella newsletter del giovedì.
+          Mi chiamo Giuseppe Funicello: developer, YouTuber e nomade digitale da più di dieci anni, con una delle più grandi
+          community di developer in Italia. Ho deciso di organizzare per la mia community un'esperienza nomade: quattro giorni
+          nella natura a lavorare e a conoscersi.
         </p>
         <div class="flex flex-wrap gap-3">
           <a href="https://www.giuppi.dev" target="_blank" rel="noreferrer" class="btn btn-ghost-dark">giuppi.dev</a>

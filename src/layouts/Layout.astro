@@ -175,6 +175,37 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
     background: var(--moss);
   }
 
+  /* Exploration maps behind section content. */
+  .site .deco {
+    position: absolute;
+    z-index: -1;
+    max-width: none;
+    pointer-events: none;
+  }
+
+  .site img.deco {
+    height: auto;
+  }
+
+  /* On phones a full-width map is too small to read: show a wider, centred crop of it. */
+  @media (max-width: 767px) {
+    .site img.deco {
+      left: 50% !important;
+      right: auto !important;
+      width: 240vw !important;
+      transform: translateX(-50%);
+    }
+  }
+
+  .site img.deco.ink {
+    opacity: 0.06;
+  }
+
+  .site img.deco.paper {
+    opacity: 0.11;
+  }
+
+
   /* Contour lines used as a subtle texture on dark sections. */
   .site .contours {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400' fill='none' stroke='%23f2f0e8' stroke-width='1'%3E%3Cpath d='M0 25 C150 -3 450 53 600 25'/%3E%3Cpath d='M0 75 C150 47 450 103 600 75'/%3E%3Cpath d='M0 125 C150 97 450 153 600 125'/%3E%3Cpath d='M0 175 C150 147 450 203 600 175'/%3E%3Cpath d='M0 225 C150 197 450 253 600 225'/%3E%3Cpath d='M0 275 C150 247 450 303 600 275'/%3E%3Cpath d='M0 325 C150 297 450 353 600 325'/%3E%3Cpath d='M0 375 C150 347 450 403 600 375'/%3E%3C/svg%3E");
