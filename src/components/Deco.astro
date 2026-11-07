@@ -1,0 +1,14 @@
+---
+// src/components/Deco.astro
+// Faint exploration maps (route grid, river valley, contour lines) layered behind a section's content.
+// The section needs `relative isolate overflow-hidden` so the map sits behind its content and is clipped by it.
+interface Props {
+  kind: "map" | "river" | "topo";
+  tone?: "ink" | "paper";
+  class?: string;
+}
+
+const { kind, tone = "paper", class: className = "" } = Astro.props;
+---
+
+<img aria-hidden="true" alt="" src={`/media/deco/${kind}-${tone}.webp`} loading="lazy" decoding="async" class={`deco ${tone} ${className}`} />
