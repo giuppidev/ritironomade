@@ -1,7 +1,12 @@
 ---
 // src/layouts/Layout.astro
-// Site shell: fonts, meta tags, theme and the shared video lightbox and signup wiring.
+// Site shell: self-hosted fonts, meta tags, theme and the shared video lightbox and signup wiring.
+import "@fontsource/lora/latin-400.css";
+import "@fontsource/lora/latin-400-italic.css";
+import "@fontsource/instrument-serif/latin-400.css";
+import "@fontsource-variable/dm-sans/wght.css";
 import "../styles/globals.css";
+import loraWoff2 from "@fontsource/lora/files/lora-latin-400-normal.woff2?url";
 import VideoModal from "../components/VideoModal.astro";
 import WaitlistScript from "../components/WaitlistScript.astro";
 
@@ -9,6 +14,8 @@ interface Props {
   title: string;
   socialTitle?: string;
   description?: string;
+  // Origins of remote media the page paints first, to open the connection early.
+  preconnect?: string[];
 }
 
 const {
@@ -16,6 +23,7 @@ const {
   socialTitle = title,
   description = "Quattro giorni nella natura per condividere casa, lavoro e idee con persone che lavorano da remoto.",
 } = Astro.props;
+const { preconnect = [] } = Astro.props;
 const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
 ---
 
@@ -34,12 +42,8 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Instrument+Serif&family=Jost:wght@300..600&display=swap"
-      rel="stylesheet"
-    />
+    {preconnect.map((origin) => <link rel="preconnect" href={origin} />)}
+    <link rel="preload" href={loraWoff2} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
   </head>
   <body class="site">
@@ -54,19 +58,19 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
     scroll-behavior: smooth;
   }
 
-  /* Monochrome palette: deep black and warm whites. */
+  /* Forest palette: pine green, warm cream and an ember accent. */
   .site {
-    --paper: #f2f0e8; /* warm white: testo su scuro, pulsante primario */
-    --paper-2: #d3d8d6; /* muted white */
-    --mist: #bcc4c4; /* sezioni chiare */
-    --ink: #000000; /* sezioni scure */
-    --night: #070d17; /* hero */
-    --moss: #2a292a; /* charcoal */
-    --stone: #2a292a; /* testo su chiaro */
-    --ember: rgb(42 41 42 / 0.65); /* etichette su chiaro */
-    --line: rgb(0 0 0 / 0.18);
-    --font-display: "Libre Baskerville", Baskerville, Georgia, serif;
-    --font-body: "Jost", system-ui, sans-serif;
+    --paper: #fbf7ee; /* crema: testo su scuro, pulsante primario */
+    --paper-2: #ece4d3; /* crema spenta */
+    --mist: #f4eee0; /* sezioni chiare */
+    --ink: #0a140f; /* sezioni scure: verde pino */
+    --night: #0a140f; /* hero */
+    --moss: #1f2d24; /* verde scuro */
+    --stone: #1f2d24; /* testo su chiaro */
+    --ember: #9c4410; /* etichette su chiaro: brace */
+    --line: rgb(31 45 36 / 0.2);
+    --font-display: "Lora", "Iowan Old Style", Georgia, serif;
+    --font-body: "DM Sans Variable", "DM Sans", system-ui, sans-serif;
     background: var(--mist);
     color: var(--moss);
     font-family: var(--font-body);
@@ -74,9 +78,9 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
   }
 
   .site .on-dark {
-    --ember: rgb(211 216 214 / 0.65);
-    --stone: rgb(211 216 214 / 0.8);
-    --line: rgb(255 255 255 / 0.16);
+    --ember: #f0a06a;
+    --stone: rgb(251 247 238 / 0.78);
+    --line: rgb(251 247 238 / 0.16);
     color: var(--paper);
   }
 
@@ -112,8 +116,8 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
   }
 
   .site .h-section {
-    font-size: clamp(32px, 4vw, 54px);
-    line-height: 1.15;
+    font-size: clamp(33px, 4.1vw, 56px);
+    line-height: 1.12;
   }
 
   .site .h-giant {
@@ -121,7 +125,7 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
     line-height: 1;
   }
 
-  /* Pill buttons, tracked uppercase */
+  /* Soft-cornered buttons, sentence case */
   .site .btn {
     display: inline-flex;
     align-items: center;
@@ -129,18 +133,17 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     border: 1px solid transparent;
-    border-radius: 999px;
+    border-radius: 8px;
     font-family: var(--font-body);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 500;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   }
 
   .site .btn-light {
     background: var(--paper);
     border-color: var(--paper);
-    color: #000;
+    color: var(--ink);
   }
 
   .site .btn-light:hover {
@@ -148,26 +151,26 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
   }
 
   .site .btn-ghost {
-    border-color: rgb(242 240 232 / 0.45);
+    border-color: rgb(251 247 238 / 0.45);
     color: var(--paper);
   }
 
   .site .btn-ghost:hover {
-    border-color: rgb(242 240 232 / 0.8);
+    border-color: rgb(251 247 238 / 0.8);
   }
 
   .site .btn-ghost-dark {
-    border-color: rgb(42 41 42 / 0.35);
+    border-color: rgb(31 45 36 / 0.35);
     color: var(--moss);
   }
 
   .site .btn-ghost-dark:hover {
-    border-color: rgb(42 41 42 / 0.8);
+    border-color: rgb(31 45 36 / 0.8);
   }
 
   .site .btn-dark {
-    background: #000;
-    border-color: #000;
+    background: var(--ink);
+    border-color: var(--ink);
     color: var(--paper);
   }
 
@@ -208,7 +211,7 @@ const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : "/og.jpg";
 
   /* Contour lines used as a subtle texture on dark sections. */
   .site .contours {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400' fill='none' stroke='%23f2f0e8' stroke-width='1'%3E%3Cpath d='M0 25 C150 -3 450 53 600 25'/%3E%3Cpath d='M0 75 C150 47 450 103 600 75'/%3E%3Cpath d='M0 125 C150 97 450 153 600 125'/%3E%3Cpath d='M0 175 C150 147 450 203 600 175'/%3E%3Cpath d='M0 225 C150 197 450 253 600 225'/%3E%3Cpath d='M0 275 C150 247 450 303 600 275'/%3E%3Cpath d='M0 325 C150 297 450 353 600 325'/%3E%3Cpath d='M0 375 C150 347 450 403 600 375'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400' fill='none' stroke='%23fbf7ee' stroke-width='1'%3E%3Cpath d='M0 25 C150 -3 450 53 600 25'/%3E%3Cpath d='M0 75 C150 47 450 103 600 75'/%3E%3Cpath d='M0 125 C150 97 450 153 600 125'/%3E%3Cpath d='M0 175 C150 147 450 203 600 175'/%3E%3Cpath d='M0 225 C150 197 450 253 600 225'/%3E%3Cpath d='M0 275 C150 247 450 303 600 275'/%3E%3Cpath d='M0 325 C150 297 450 353 600 325'/%3E%3Cpath d='M0 375 C150 347 450 403 600 375'/%3E%3C/svg%3E");
     background-size: 900px auto;
     opacity: 0.07;
   }

@@ -44,6 +44,6 @@ export const pillars = [
 ] as const;
 
 export const intro =
-  "Quattro giorni in una casa nella natura, dove nomadi digitali, lavoratori da remoto e appassionati di tecnologia vivono e lavorano insieme. Le giornate alternano coworking, attività all'aria aperta e networking informale. Il cuore è l'unconference: una giornata in cui il programma lo costruiscono i partecipanti.";
+  "Quattro giorni in una casa nella natura, dove freelance, lavoratori da remoto e professionisti del tech vivono e lavorano insieme. Le giornate alternano coworking, attività all'aria aperta e networking informale. Il cuore è l'unconference: una giornata in cui il programma lo costruiscono i partecipanti.";
 
 export const isOpen = (edition: Edition) => Boolean(edition.registration);

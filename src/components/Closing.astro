@@ -48,13 +48,13 @@ const footerColumns = [
       <>
         <form data-waitlist class="mx-auto flex max-w-md flex-col items-center gap-8">
           <label class="w-full text-left">
-            <span class="mb-1 block text-[11px] uppercase tracking-[0.1em] text-[var(--paper)]/55">Email *</span>
+            <span class="mb-1 block text-[11px] uppercase tracking-[0.1em] text-[var(--paper)]/70">Email *</span>
             <input
               type="email"
               name="email"
               required
               placeholder="nome@esempio.it"
-              class="w-full border-b border-[var(--paper)]/30 bg-transparent py-3 text-[var(--paper)] placeholder:text-[var(--paper)]/35 focus:border-[var(--paper)] focus:outline-none"
+              class="w-full border-b border-[var(--paper)]/30 bg-transparent py-3 text-[var(--paper)] placeholder:text-[var(--paper)]/60 focus:border-[var(--paper)] focus:outline-none"
             />
           </label>
           <button type="submit" class="btn btn-light">Iscriviti alla lista</button>
@@ -98,7 +98,7 @@ const footerColumns = [
     {
       footerColumns.map((column) => (
         <div>
-          <p class="eyebrow mb-4 text-[var(--moss)]/65">{column.title}</p>
+          <p class="eyebrow mb-4 text-[var(--moss)]/80">{column.title}</p>
           <nav class="flex flex-col gap-3">
             {column.links.map((link) => (
               <a href={link.href} class="text-[12px] tracking-wide text-[var(--moss)]/75 transition-colors hover:text-[var(--moss)]">

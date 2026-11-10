@@ -8,6 +8,9 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   site: "https://www.ritironomade.it",
 
+  // The stylesheet is small: inlining it removes a render-blocking request.
+  build: { inlineStylesheets: "always" },
+
   vite: {
     plugins: [tailwindcss()],
   },
