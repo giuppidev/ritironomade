@@ -1,6 +1,6 @@
 ---
 // src/components/EditionList.astro
-// Edition cards in the style of Pampero's crew section: photo, eyebrow, serif name, short text.
+// Edition cards: photo, date, serif name, place and a button to open the edition.
 import { homeEditions, type Edition } from "../data/editions";
 import { editionMedia } from "../data/media";
 import { isOpen } from "../data/retreat";
@@ -26,6 +26,7 @@ const list = homeEditions
             <Media
               slot={editionMedia[edition.slug]}
               still
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               class="aspect-[4/5] rounded-xl"
               mediaClass="transition duration-700 group-hover:scale-[1.03]"
             />
@@ -41,8 +42,8 @@ const list = homeEditions
           <p class="eyebrow mb-2 text-[var(--ember)]">{edition.dateLabel}</p>
           <h3 class="serif mb-2 text-3xl leading-tight">{edition.heroTitle}</h3>
           <p class="lead text-[var(--stone)]">{edition.location}</p>
-          <span class="mt-4 inline-block text-[12px] uppercase tracking-[0.1em] text-[var(--ember)] transition group-hover:text-current">
-            Scopri l'edizione →
+          <span class:list={["btn mt-5 !px-4 !py-2 !text-[14px]", isOpen(edition) ? "btn-light" : "btn-ghost"]}>
+            Scopri l'edizione <span aria-hidden="true">→</span>
           </span>
         </a>
       </li>

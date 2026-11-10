@@ -6,9 +6,9 @@ interface FAQItem {
 
 export const faqItems: FAQItem[] = [
   {
-    question: "Posso partecipare se sono nuovo al lavoro remoto?",
+    question: "Posso partecipare se ho appena iniziato come freelance?",
     answer:
-      "Accogliamo nomadi digitali di tutti i livelli di esperienza. Molti workshop sono progettati specificamente per coloro che stanno passando o ottimizzando il loro stile di vita da lavoro remoto.",
+      "Sì. Partecipa chi ha appena iniziato e chi lavora in proprio da anni.",
   },
   {
     question: "Se non voglio dormire lì?",
@@ -28,7 +28,7 @@ export const faqItems: FAQItem[] = [
   {
     question: "Devo per forza essere un developer?",
     answer:
-      "Assolutamente no, lo spirito è quello di condividere un'esperienza nomade e creare discussioni su qualsiasi argomento.",
+      "No. La maggior parte lavora nel tech, ma si parla di qualsiasi argomento.",
   },
   {
     question: "Ho altre domande, dove le faccio?",

@@ -1,6 +1,6 @@
 ---
 // src/components/Header.astro
-// Transparent top bar over the hero, Pampero-style: wordmark left, centred nav.
+// Transparent top bar over the hero: wordmark left, nav right.
 // Below lg the nav collapses into a minimal hamburger with a full-screen menu.
 import Logo from "./Logo.astro";
 
@@ -15,10 +15,10 @@ const links = [
 
 <header class="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 pt-7 text-[var(--paper)] md:px-[3.5vw] md:pt-[1.5vw]">
   <Logo />
-  <nav class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-[2.4vw] lg:flex">
+  <nav class="hidden items-center gap-8 lg:flex">
     {
       links.map((link) => (
-        <a href={link.href} class="text-[max(14px,0.9vw)] font-medium text-[var(--paper)]/85 transition-colors duration-300 hover:text-[var(--paper)]">
+        <a href={link.href} class="text-[15px] font-medium text-[var(--paper)]/85 transition-colors duration-300 hover:text-[var(--paper)]">
           {link.label}
         </a>
       ))

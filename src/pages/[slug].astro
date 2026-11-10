@@ -19,13 +19,17 @@ const facts = [
   { label: "Quando", title: edition.when.title, text: edition.when.description },
   { label: "Cosa", title: edition.what.title, text: edition.what.description },
 ];
+const heroSrc = editionMedia[edition.slug].src;
+const remoteOrigins = heroSrc.startsWith("https://") ? [new URL(heroSrc).origin] : [];
 ---
 
-<Layout title={`${edition.heroTitle} · ${edition.location} · Ritiro Nomade`}>
+<Layout title={`${edition.heroTitle} · ${edition.location} · Ritiro Nomade`} preconnect={remoteOrigins}>
   <Header />
 
+  <main>
+
   <section class="on-dark relative isolate flex min-h-[85svh] items-end overflow-hidden bg-[var(--night)]">
-    <Media slot={editionMedia[edition.slug]} eager class="!absolute inset-0 -z-10" overlayClass="bg-gradient-to-t from-black/85 via-black/20 to-black/40" />
+    <Media slot={editionMedia[edition.slug]} eager sizes="100vw" class="!absolute inset-0 -z-10" overlayClass="bg-gradient-to-t from-black/85 via-black/20 to-black/40" />
     <div class="mx-auto w-full max-w-7xl px-6 pb-16 pt-40 md:px-14">
       <a href="/#edizioni" class="mb-8 inline-block text-[12px] uppercase tracking-[0.1em] text-[var(--paper)]/70 hover:text-[var(--paper)]">← Tutte le edizioni</a>
       <p class="eyebrow mb-5 text-[var(--ember)]">{edition.title}</p>
@@ -79,16 +83,16 @@ const facts = [
             <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
               {edition.schedule.map((day) => (
                 <div>
-                  <p class="serif mb-1 text-sm italic opacity-60">{day.date}</p>
+                  <p class="serif mb-1 text-sm italic opacity-80">{day.date}</p>
                   <h3 class="serif mb-6 border-b border-[var(--line)] pb-4 text-2xl text-black">{day.title}</h3>
                   <ol class="space-y-4">
                     {sortedActivities(day).map((activity) => (
                       <li class="grid grid-cols-[3.5rem_1fr] gap-3 text-sm">
-                        <span class="opacity-60">{activity.time.split("–")[0].trim()}</span>
+                        <span class="opacity-80">{activity.time.split("–")[0].trim()}</span>
                         <span>
                           {activity.title}
                           <span class="eyebrow ml-1 !text-[0.6rem] text-[var(--ember)]">{activityLabels[activity.type]}</span>
-                          {activity.description && <span class="block opacity-55">{activity.description}</span>}
+                          {activity.description && <span class="block opacity-80">{activity.description}</span>}
                         </span>
                       </li>
                     ))}
@@ -143,6 +147,8 @@ const facts = [
       <EditionList exclude={edition.slug} />
     </div>
   </section>
+
+  </main>
 
   <Closing form={false} />
 </Layout>

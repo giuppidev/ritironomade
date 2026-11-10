@@ -1,7 +1,9 @@
 ---
 // src/components/Media.astro
 // Renders a media slot: a photo or a muted looping video.
-// Eager videos (the hero) autoplay right away; the others load and play only while on screen.
+// Eager videos (the hero) paint their poster first and start once the page has loaded;
+// the others load and play only while on screen. Nothing plays for people who ask for reduced motion.
+// Photos in /media also ship an 800px version, picked through `sizes`.
 // `still` shows a video's poster instead of the video itself.
 // `preload` loads a photo right away, for slots peeking in from the side of a carousel.
 import { media, type MediaKey, type MediaSlot } from "../data/media";
@@ -13,6 +15,7 @@ interface Props {
   eager?: boolean;
   still?: boolean;
   preload?: boolean;
+  sizes?: string;
   overlayClass?: string;
 }
 
@@ -23,38 +26,76 @@ const {
   eager = false,
   still = false,
   preload = false,
+  sizes = "(min-width: 768px) 50vw, 100vw",
   overlayClass,
 } = Astro.props;
 const item: MediaSlot = typeof slot === "string" ? media[slot] : slot;
 const portrait = "(max-width: 767px) and (orientation: portrait)";
+const imageSrc = item.kind === "video" ? item.poster! : item.src;
+// scripts/media-variants.mjs writes a "-800.webp" file next to every photo in public/media.
+const responsive = item.kind === "image" && /^\/media\/[^/]+\.webp$/.test(item.src);
+// Unsplash resizes on request through its `w` parameter.
+const unsplash = item.kind === "image" && item.src.startsWith("https://images.unsplash.com/") && item.src.includes("w=1600");
+const srcset = responsive
+  ? `${item.src.replace(/\.webp$/, "-800.webp")} 800w, ${item.src} 1600w`
+  : unsplash
+    ? `${item.src.replace("w=1600", "w=800")} 800w, ${item.src} 1600w`
+    : undefined;
 ---
 
 <figure class={`relative overflow-hidden ${className}`}>
   {
-    item.kind === "video" && !still ? (
+    item.kind === "video" && !still && eager ? (
+      <>
+        <picture>
+          {item.mobile && <source media={portrait} srcset={item.mobile.poster} />}
+          <img
+            class={`absolute inset-0 h-full w-full object-cover ${mediaClass}`}
+            src={item.poster}
+            alt=""
+            style={item.position ? `object-position: ${item.position}` : undefined}
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <video
+          class={`absolute inset-0 h-full w-full object-cover ${mediaClass}`}
+          style={item.position ? `object-position: ${item.position}` : undefined}
+          muted
+          loop
+          playsinline
+          preload="none"
+          data-deferred-video
+          aria-label={item.alt}
+        >
+          {item.mobile && <source src={item.mobile.src} media={portrait} type="video/mp4" />}
+          <source src={item.src} type="video/mp4" />
+        </video>
+      </>
+    ) : item.kind === "video" && !still ? (
       <video
         class={`h-full w-full object-cover ${mediaClass}`}
         poster={item.poster}
         style={item.position ? `object-position: ${item.position}` : undefined}
-        data-mobile-poster={item.mobile?.poster}
-        autoplay={eager}
         muted
         loop
         playsinline
-        preload={eager ? "auto" : "none"}
-        data-lazy-video={eager ? undefined : ""}
+        preload="none"
+        data-lazy-video
         aria-label={item.alt}
       >
-        {item.mobile && <source src={item.mobile.src} media={portrait} type="video/mp4" />}
         <source src={item.src} type="video/mp4" />
       </video>
     ) : (
       <img
         class={`h-full w-full object-cover ${mediaClass}`}
-        src={item.kind === "video" ? item.poster : item.src}
+        src={imageSrc}
+        srcset={srcset}
+        sizes={srcset ? sizes : undefined}
         alt={item.alt}
         style={item.position ? `object-position: ${item.position}` : undefined}
         loading={eager || preload ? "eager" : "lazy"}
+        fetchpriority={eager ? "high" : undefined}
         decoding="async"
       />
     )
@@ -63,26 +104,32 @@ const portrait = "(max-width: 767px) and (orientation: portrait)";
 </figure>
 
 <script>
-  // Phones held upright get the portrait poster too, so the first frame matches the video.
-  if (matchMedia("(max-width: 767px) and (orientation: portrait)").matches) {
-    document.querySelectorAll<HTMLVideoElement>("video[data-mobile-poster]").forEach((video) => {
-      video.poster = video.dataset.mobilePoster!;
-    });
-  }
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const { target, isIntersecting } of entries) {
-        const video = target as HTMLVideoElement;
-        if (isIntersecting) {
-          if (video.preload === "none") video.preload = "auto";
-          video.play().catch(() => {});
-        } else {
-          video.pause();
+  if (!reducedMotion) {
+    // The hero clip waits for the page to finish loading, so it never competes with the first paint.
+    const startDeferred = () =>
+      document.querySelectorAll<HTMLVideoElement>("video[data-deferred-video]").forEach((video) => {
+        video.preload = "auto";
+        video.play().catch(() => {});
+      });
+    if (document.readyState === "complete") startDeferred();
+    else addEventListener("load", () => setTimeout(startDeferred, 200), { once: true });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          const video = target as HTMLVideoElement;
+          if (isIntersecting) {
+            if (video.preload === "none") video.preload = "auto";
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
         }
-      }
-    },
-    { rootMargin: "200px 0px" },
-  );
-  document.querySelectorAll<HTMLVideoElement>("video[data-lazy-video]").forEach((video) => observer.observe(video));
+      },
+      { rootMargin: "200px 0px" },
+    );
+    document.querySelectorAll<HTMLVideoElement>("video[data-lazy-video]").forEach((video) => observer.observe(video));
+  }
 </script>
