@@ -38,7 +38,7 @@ const dayActivities = sortedActivities(typicalDay)
       class="!absolute inset-0 -z-10"
       overlayClass="bg-[linear-gradient(to_top,rgb(10_20_15)_0%,rgb(10_20_15/0.94)_10%,rgb(10_20_15/0.74)_26%,rgb(10_20_15/0.36)_50%,rgb(10_20_15/0.05)_72%,rgb(10_20_15/0.4)_100%)]"
     />
-    <div class="mt-auto flex w-full flex-col gap-8 px-6 pb-8 md:flex-row md:items-end md:justify-between md:gap-12 md:px-14 md:pb-12">
+    <div class="mt-auto flex w-full flex-col px-6 pb-8 md:flex-row md:items-end md:justify-between md:gap-12 md:px-14 md:pb-12">
       <div>
         <h1 class="serif text-[min(8.4vw,46px)] leading-[1.1] [text-shadow:0_2px_24px_rgb(0_0_0/0.35)] md:text-[clamp(46px,4.6vw,80px)]">
           Cercatori di libertà.<br /><em>Una scelta alla volta.</em>
@@ -46,11 +46,19 @@ const dayActivities = sortedActivities(typicalDay)
         <p class="mt-4 max-w-[34rem] text-[16px] leading-[1.45] text-[var(--paper)]/85 [text-shadow:0_1px_12px_rgb(0_0_0/0.45)] md:mt-5 md:text-[18px]">
           Un ritiro nella natura per chi lavora da remoto. Quattro giorni di condivisione, confronto e domande. Tante domande.
         </p>
-        <a href="#ritiro" class="btn btn-light mt-6">Scopri di più</a>
+        <div class="mt-6 flex items-center gap-3">
+          <a href="#ritiro" class="btn btn-light shrink-0 !px-4 md:!px-6">Scopri di più</a>
+          <!-- On phones the next edition sits beside the button; on desktop it moves to the right edge. -->
+          <div class="min-w-0 border-l border-[var(--line)] pl-3 md:hidden">
+            <p class="eyebrow !text-[10px] !tracking-[0.14em] text-[var(--ember)]">Prossima edizione</p>
+            <p class="serif mt-0.5 text-[15px] leading-tight">{nextEdition.location}</p>
+            <p class="mt-0.5 text-[12px] leading-tight text-[var(--stone)]">{nextEdition.dateLabel}</p>
+          </div>
+        </div>
       </div>
-      <div class="shrink-0 border-t border-[var(--line)] pt-4 md:border-l md:border-t-0 md:pb-1 md:pl-6 md:pt-0">
+      <div class="hidden shrink-0 border-l border-[var(--line)] pb-1 pl-6 md:block">
         <p class="eyebrow mb-1.5 text-[var(--ember)]">Prossima edizione</p>
-        <p class="serif text-[19px] leading-tight md:text-[21px]">{nextEdition.location}</p>
+        <p class="serif text-[21px] leading-tight">{nextEdition.location}</p>
         <p class="mt-1 text-[15px] text-[var(--stone)]">{nextEdition.dateLabel}</p>
       </div>
     </div>
